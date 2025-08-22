@@ -20,9 +20,6 @@
                 </a>
                 <nav>
                     <ul class="header-nav">
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="/mypage">マイページ</a>
-                        </li>
                         @if (!Auth::check())
                         <li class="header-nav__item">
                             <form class="form" action="/login" method="post">
@@ -39,6 +36,15 @@
                             </form>
                         </li>
                         @endif
+                        <li class="header-nav__item">
+                            <a class="header-nav__link" href="/mypage">マイページ</a>
+                        </li>
+                        <li class="header-nav__sell-item">
+                            <form class="form" action="/sell" method="get">
+                                @csrf
+                                <button class="sell__button">出品</button>
+                            </form>
+                        </li>
                     </ul>
                 </nav>
             </div>
