@@ -11,8 +11,8 @@ class ItemController extends Controller
         return view('index');
     }
 
-    public function login()
+    public function profileSetting()
     {
-        return view('auth.login');
+        return view('profile-setting');
     }
 }

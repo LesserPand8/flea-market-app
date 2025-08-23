@@ -15,4 +15,4 @@ use App\Http\Controllers\ItemController;
 */
 
 Route::get('/', [ItemController::class, 'index']);
-Route::post('/login', [ItemController::class, 'login']);
+Route::get('/mypage/profile', [ItemController::class, 'profileSetting']);

@@ -16,16 +16,17 @@
         <div class="header__inner">
             <div class="header-utilities">
                 <a class="header__logo" href="/">
-                    COATHTECH
+                    <img src="{{ asset('img/logo.svg') }}" alt="coachtech">
                 </a>
                 <nav>
                     <ul class="header-nav">
                         @if (!Auth::check())
                         <li class="header-nav__item">
-                            <form class="form" action="/login" method="post">
+                            <!-- <form class="form" action="/login" method="get">
                                 @csrf
                                 <button class="header-nav__button">ログイン</button>
-                            </form>
+                            </form> -->
+                            <a class="header-nav__button" href="/login">ログイン</a>
                         </li>
                         @endif
                         @if (Auth::check())
