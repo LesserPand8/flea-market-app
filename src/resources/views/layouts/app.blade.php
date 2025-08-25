@@ -16,7 +16,7 @@
         <div class="header__inner">
             <div class="header-utilities">
                 <a class="header__logo" href="/">
-                    <img src="{{ asset('img/logo.svg') }}" alt="coachtech">
+                    <img src="{{ asset('storage/images/logo.svg') }}" alt="coachtech">
                 </a>
                 <nav>
                     <ul class="header-nav">
