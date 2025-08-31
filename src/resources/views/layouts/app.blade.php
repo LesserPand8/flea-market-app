@@ -18,36 +18,37 @@
                 <a class="header__logo" href="/">
                     <img src="{{ asset('storage/images/logo.svg') }}" alt="coachtech">
                 </a>
-                <nav>
-                    <ul class="header-nav">
-                        @if (!Auth::check())
-                        <li class="header-nav__item">
-                            <!-- <form class="form" action="/login" method="get">
+                <form class="search" action="/search" method="GET">
+                    <input class="search__input" type="text" name="keyword" placeholder="なにをお探しですか？">
+                </form>
+                <div class="header-nav">
+                    @if (!Auth::check())
+                    <div class="header-nav__item">
+                        <!-- <form class="form" action="/login" method="get">
                                 @csrf
                                 <button class="header-nav__button">ログイン</button>
                             </form> -->
-                            <a class="header-nav__button" href="/login">ログイン</a>
-                        </li>
-                        @endif
-                        @if (Auth::check())
-                        <li class="header-nav__item">
-                            <form class="form" action="/logout" method="post">
-                                @csrf
-                                <button class="header-nav__button">ログアウト</button>
-                            </form>
-                        </li>
-                        @endif
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="/mypage">マイページ</a>
-                        </li>
-                        <li class="header-nav__sell-item">
-                            <form class="form" action="/sell" method="get">
-                                @csrf
-                                <button class="sell__button">出品</button>
-                            </form>
-                        </li>
-                    </ul>
-                </nav>
+                        <a class="header-nav__button" href="/login">ログイン</a>
+                    </div>
+                    @endif
+                    @if (Auth::check())
+                    <div class="header-nav__item">
+                        <form class="form" action="/logout" method="post">
+                            @csrf
+                            <button class="header-nav__button">ログアウト</button>
+                        </form>
+                    </div>
+                    @endif
+                    <div class="header-nav__item">
+                        <a class="header-nav__link" href="/mypage">マイページ</a>
+                    </div>
+                    <div class="header-nav__sell-item">
+                        <form class="form" action="/sell" method="get">
+                            @csrf
+                            <button class="sell__button">出品</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
