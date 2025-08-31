@@ -24,7 +24,14 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|max:20',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => '名前を入力してください',
         ];
     }
 }
