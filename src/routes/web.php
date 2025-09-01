@@ -16,3 +16,5 @@ use App\Http\Controllers\ItemController;
 
 Route::get('/', [ItemController::class, 'index']);
 Route::get('/mypage/profile', [ItemController::class, 'profileSetting']);
+Route::get('/item/{id}', [ItemController::class, 'detail']);
+Route::get('/mylist', [ItemController::class, 'mylist'])->name('mylist');
