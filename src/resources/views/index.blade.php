@@ -6,22 +6,17 @@
 
 @section('content')
 <div class="content">
-    <div class="content-list">
-        <div class="recommendation">
-
-        </div>
-        <div class="mylist">
-
-        </div>
+    <div class="tab-menu">
+        <a class="tab active" href="#">おすすめ</a>
+        <a class="tab" href="#">マイリスト</a>
     </div>
     <div class="item-contents">
         @foreach ($items as $item)
-        <div class="item-content">
-            <a href="/item/{{$item->id}}" class="item-link"></a>
-            <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
-            <div class="detail-content">
-                <p>{{$item->name}}</p>
-            </div>
+        <div class="item-card">
+            <a href="/item/{{$item->id}}" class="item-link">
+                <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
+                <div class="item-name">{{$item->name}}</div>
+            </a>
         </div>
         @endforeach
     </div>
