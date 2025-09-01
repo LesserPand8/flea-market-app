@@ -24,10 +24,6 @@
                 <div class="header-nav">
                     @if (!Auth::check())
                     <div class="header-nav__item">
-                        <!-- <form class="form" action="/login" method="get">
-                                @csrf
-                                <button class="header-nav__button">ログイン</button>
-                            </form> -->
                         <a class="header-nav__button" href="/login">ログイン</a>
                     </div>
                     @endif

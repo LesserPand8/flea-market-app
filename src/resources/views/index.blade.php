@@ -7,8 +7,8 @@
 @section('content')
 <div class="content">
     <div class="tab-menu">
-        <a class="tab active" href="#">おすすめ</a>
-        <a class="tab" href="#">マイリスト</a>
+        <a class="tab-recommend" href="#">おすすめ</a>
+        <a class="tab-mylist" href="#">マイリスト</a>
     </div>
     <div class="item-contents">
         @foreach ($items as $item)
