@@ -38,10 +38,10 @@
                     <div class="header-nav__item">
                         <a class="header-nav__link" href="/mypage">マイページ</a>
                     </div>
-                    <div class="header-nav__sell-item">
-                        <form class="form" action="/sell" method="get">
+                    <div class="header-nav__sale-item">
+                        <form class="form" action="/sale" method="get">
                             @csrf
-                            <button class="sell__button">出品</button>
+                            <button class="sale__button">出品</button>
                         </form>
                     </div>
                 </div>
