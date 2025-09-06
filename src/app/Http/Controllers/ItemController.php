@@ -18,7 +18,8 @@ class ItemController extends Controller
 
     public function profileSetting()
     {
-        return view('profile-setting');
+        $user = Auth::user();
+        return view('profile-setting', compact('user'));
     }
 
     public function detail($id)

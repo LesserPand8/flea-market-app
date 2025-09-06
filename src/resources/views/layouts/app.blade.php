@@ -24,14 +24,14 @@
                 <div class="header-nav">
                     @if (!Auth::check())
                     <div class="header-nav__item">
-                        <a class="header-nav__button" href="/login">ログイン</a>
+                        <a class="header-nav__button-login" href="/login">ログイン</a>
                     </div>
                     @endif
                     @if (Auth::check())
                     <div class="header-nav__item">
                         <form class="form" action="/logout" method="post">
                             @csrf
-                            <button class="header-nav__button">ログアウト</button>
+                            <button class="header-nav__button-logout">ログアウト</button>
                         </form>
                     </div>
                     @endif
