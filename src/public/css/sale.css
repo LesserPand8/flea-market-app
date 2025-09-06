@@ -1,0 +1,29 @@
+.category-checkbox-group {
+    width: 700px;
+    margin-bottom: 40px;
+}
+
+.category-checkbox-label {
+    display: inline-block;
+    margin: 4px 6px 4px 0;
+    cursor: pointer;
+}
+.category-checkbox-label input[type="checkbox"] {
+    display: none;
+}
+.category-checkbox-btn {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 1px solid #ff5555;
+    border-radius: 20px;
+    background: #fff;
+    color: #ff5555;
+    font-weight: bold;
+    transition: background 0.2s, color 0.2s;
+}
+.category-checkbox-label
+    input[type="checkbox"]:checked
+    + .category-checkbox-btn {
+    background: #ff5555;
+    color: #fff;
+}

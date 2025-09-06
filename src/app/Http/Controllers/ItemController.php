@@ -75,4 +75,13 @@ class ItemController extends Controller
 
         return redirect()->back();
     }
+
+    public function sale()
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        $categories = \App\Models\Category::all();
+        return view('sale', compact('categories'));
+    }
 }
