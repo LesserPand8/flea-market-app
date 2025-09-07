@@ -49,20 +49,18 @@
     margin-right: 5px;
     font-family: Inter;
     font-weight: 400;
-    font-style: Regular;
     font-size: 20px;
     line-height: 100%;
-    letter-spacing: 0%;
     text-align: center;
     vertical-align: middle;
 }
 
-.header-nav__sale-item {
+.header-nav__sell-item {
     position: relative;
-    top: 5px;
+    top: 2px;
 }
 
-.sale__button {
+.sell__button {
     background: #ffffff;
     border-radius: 4px;
     font-family: Inter;
@@ -73,14 +71,13 @@
     width: 100px;
     height: 40px;
     opacity: 1;
-    border-radius: 4px;
     margin-left: 5px;
     margin-right: 5px;
 }
 
 .search {
     position: relative;
-    top: 5px;
+    top: 2px;
 }
 
 .search__input {
@@ -97,7 +94,6 @@
 .search__input::placeholder {
     font-family: Inter;
     font-weight: 400;
-    font-style: Regular;
     font-size: 20px;
     color: #000000;
     margin-left: 10px;

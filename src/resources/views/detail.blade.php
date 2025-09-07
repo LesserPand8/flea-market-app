@@ -11,7 +11,7 @@
 @section('content')
 <div class="content">
     <div class="image-container">
-        <img class="item-image" src="{{ $item->image }}" alt="{{ $item->name }}">
+        <img class="item-image" src="{{ asset($item->image) }}" alt="{{ $item->name }}">
     </div>
     <div class="detail-container">
         <div class="item-name__box">
