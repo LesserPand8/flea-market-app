@@ -20,7 +20,7 @@ Route::get('/mypage/profile', [ItemController::class, 'profileSetting']);
 Route::get('/item/{id}', [ItemController::class, 'detail']);
 Route::get('/mylist', [ItemController::class, 'mylist'])->name('mylist');
 Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
-Route::post('/comments', [ItemController::class, 'comment']);
+Route::post('/comment', [ItemController::class, 'comment']);
 Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
 Route::post('/goods/{item_id}', [ItemController::class, 'goods']);
 Route::get('/sell', [ItemController::class, 'sell']);
