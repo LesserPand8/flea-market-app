@@ -61,13 +61,13 @@
     color: #ffffff;
     font-family: Inter;
     font-weight: 700;
-    font-style: Bold;
     font-size: 20px;
     line-height: 100%;
-    letter-spacing: 0%;
     text-align: center;
     vertical-align: middle;
     background: #ff5555;
+    border-radius: 4px;
+    border: none;
 }
 
 .register__link {

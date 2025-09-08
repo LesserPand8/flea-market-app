@@ -105,6 +105,8 @@
     vertical-align: middle;
     background: #ff5555;
     margin: 20px 0;
+    border-radius: 4px;
+    border: none;
 }
 
 .category-checkbox-group {
