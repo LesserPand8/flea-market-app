@@ -55,7 +55,7 @@ class ItemController extends Controller
         return redirect()->back();
     }
 
-    public function purchase(Request $request)
+    public function purchase()
     {
         if (!Auth::check()) {
             return redirect('/login');
@@ -69,11 +69,18 @@ class ItemController extends Controller
             return redirect('/login');
         }
         $item = Item::findOrFail($request->input('item_id'));
-        $good = new Good();
-        $good->user_id = Auth::id();
-        $good->item_id = $item->id;
-        $good->save();
-
+        $userId = Auth::id();
+        $existingGood = Good::where('user_id', $userId)->where('item_id', $item->id)->first();
+        if ($existingGood) {
+            // 既にいいねしていれば解除（削除）
+            $existingGood->delete();
+        } else {
+            // いいねしていなければ追加
+            $good = new Good();
+            $good->user_id = $userId;
+            $good->item_id = $item->id;
+            $good->save();
+        }
         return redirect()->back();
     }
 

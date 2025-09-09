@@ -4,10 +4,6 @@
 <link rel="stylesheet" href="{{ asset('css/detail.css') }}">
 @endsection
 
-<style>
-
-</style>
-
 @section('content')
 <div class="content">
     <div class="image-container">
@@ -28,6 +24,7 @@
                 <div class="detail-icon__goods">
                     <form class="detail-icon__goods-form" action="/goods/{{ $item->id }}" method="POST">
                         @csrf
+                        <input type="hidden" name="item_id" value="{{ $item->id }}">
                         <button type="submit" class="detail-icon__goods-icon">
                             ☆
                         </button>
@@ -36,7 +33,7 @@
                 </div>
                 <div class="detail-icon__comments">
                     <span class="detail-icon__comments-icon">💬</span>
-                    <p class="detail-icon__comments-count">0</p>
+                    <p class="detail-icon__comments-count">{{ $item->comments->count() }}</p>
                 </div>
             </div>
         </div>
