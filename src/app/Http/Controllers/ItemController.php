@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Good;
 use App\Models\Comment;
+use App\Models\Profile;
 
 class ItemController extends Controller
 {
@@ -26,7 +27,12 @@ class ItemController extends Controller
     public function detail($id)
     {
         $item = Item::findOrFail($id);
-        return view('detail', compact('item'));
+        $isLiked = false;
+        if (\Auth::check()) {
+            $user = \Auth::user();
+            $isLiked = $item->goods()->where('user_id', $user->id)->exists();
+        }
+        return view('detail', compact('item', 'isLiked'));
     }
 
     public function mylist()
@@ -55,12 +61,14 @@ class ItemController extends Controller
         return redirect()->back();
     }
 
-    public function purchase()
+    public function purchase($id)
     {
+        $item = Item::findOrFail($id);
+        $profile = Profile::where('user_id', auth()->id())->first();
         if (!Auth::check()) {
             return redirect('/login');
         }
-        return view('purchase');
+        return view('purchase', compact('item', 'profile'));
     }
 
     public function goods(Request $request)

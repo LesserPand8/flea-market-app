@@ -1,0 +1,166 @@
+.purchase-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.purchase-container {
+    display: flex;
+    flex-direction: column;
+    width: 750px;
+    margin-right: 40px;
+}
+
+.item-box {
+    display: flex;
+    border-bottom: 1px solid #000000;
+}
+
+.item-image {
+    margin: 10px 40px 10px 0;
+    width: 300px;
+    padding-bottom: 40px;
+}
+
+.item-image__main {
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.item-name {
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.item-value {
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 24px;
+    color: #000000;
+}
+
+.method-box {
+    border-bottom: 1px solid #000000;
+}
+
+.method-label {
+    margin: 20px 20px;
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 15px;
+    color: #000000;
+}
+
+.method {
+    margin: 10px auto 40px 60px;
+}
+
+.method__input {
+    width: 50%;
+    height: 25px;
+    font-size: 16px;
+    border: 1px solid #5f5f5f;
+    color: #5f5f5f;
+    margin: 10px 0;
+    width: 265;
+    border-radius: 4px;
+}
+
+.method__input-label {
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    border: 1px solid #5f5f5f;
+    background: #636769;
+    color: #eaeaea;
+    border-radius: 4px;
+}
+
+.address-box {
+    border-bottom: 1px solid #000000;
+}
+
+.address-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 20px;
+}
+
+.address-label {
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 15px;
+    color: #000000;
+}
+
+.change-address {
+    text-decoration: none;
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 15px;
+    color: #0073cc;
+}
+
+.address-detail {
+    margin: 10px auto 40px 80px;
+    font-family: Inter;
+    font-weight: 600;
+    font-size: 15px;
+    color: #000000;
+}
+
+.confirmation-container {
+    width: 350px;
+    margin-left: 40px;
+}
+
+.confirmation-table {
+    width: 100%;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: #fff;
+}
+
+.confirmation-table__row {
+    border-bottom: 1px solid #000;
+}
+
+.confirmation-table__row:last-child {
+    border-bottom: none;
+}
+
+.confirmation__label {
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: center;
+    padding: 24px 15px;
+    color: #000;
+}
+
+.confirmation__value {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    padding: 24px 0;
+    color: #000;
+}
+
+.purchase__button {
+    background-color: #ff5555;
+    color: #ffffff;
+    height: 40px;
+    width: 100%;
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 4px;
+    border: none;
+}

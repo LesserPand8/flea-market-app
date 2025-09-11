@@ -25,8 +25,8 @@
                     <form class="detail-icon__goods-form" action="/goods/{{ $item->id }}" method="POST">
                         @csrf
                         <input type="hidden" name="item_id" value="{{ $item->id }}">
-                        <button type="submit" class="detail-icon__goods-icon">
-                            ☆
+                        <button type="submit" class="detail-icon__goods-icon{{ isset($isLiked) && $isLiked ? ' liked' : '' }}">
+                            {{ isset($isLiked) && $isLiked ? '★' : '☆' }}
                         </button>
                     </form>
                     <p class="detail-icon__goods-count">{{ $item->goods->count() }}</p>

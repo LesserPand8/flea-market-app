@@ -1,3 +1,6 @@
+.detail-icon__goods-icon.liked {
+    color: gold;
+}
 .content {
     display: flex;
     margin: 50px 30px;
