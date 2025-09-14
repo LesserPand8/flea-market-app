@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ExhibitionRequest;
+use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Good;
@@ -131,5 +132,54 @@ class ItemController extends Controller
         $item->categories()->sync($validated['category']);
 
         return redirect('/')->with('success', 'Item listed successfully!');
+    }
+
+    public function mypage(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        $user = Auth::user();
+        $page = $request->query('page', 'sell'); // デフォルトは'sell'
+
+        if ($page === 'buy') {
+            // 購入した商品
+            $items = Item::whereHas('purchases', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->get();
+        } else {
+            // 出品した商品
+            $items = Item::whereHas('sellers', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->get();
+        }
+
+        return view('profile', compact('user', 'items', 'page'));
+    }
+
+    public function profileUpdate(ProfileRequest $request)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        $user = Auth::user();
+        $user->name = $request->input('name');
+        $user->save();
+
+        // profilesテーブルの更新
+        $profile = Profile::firstOrNew(['user_id' => $user->id]);
+        if ($request->hasFile('profile_image')) {
+            $imageFile = $request->file('profile_image');
+            $imageName = uniqid() . '_' . $imageFile->getClientOriginalName();
+            $imageFile->storeAs('public/profiles', $imageName);
+            $profile->profile_image = 'storage/profiles/' . $imageName;
+        }
+        $profile->postal_code = $request->input('postal_code');
+        $profile->address = $request->input('address');
+        $profile->building_name = $request->input('building_name');
+        $profile->save();
+
+        return redirect('/');
     }
 }

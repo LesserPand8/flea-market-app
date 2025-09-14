@@ -122,7 +122,6 @@
 .item-description__label {
     font-family: Inter;
     font-weight: 700;
-    font-style: Bold;
     font-size: 28px;
     color: #000;
     margin: 10px 0;
@@ -142,7 +141,6 @@
 .item-info__label {
     font-family: Inter;
     font-weight: 700;
-    font-style: Bold;
     font-size: 28px;
     color: #000;
     margin: 20px 0;
@@ -151,7 +149,6 @@
 .item-info__tab {
     font-family: Inter;
     font-weight: 700;
-    font-style: Bold;
     font-size: 18px;
     margin-right: 20px;
 }
@@ -257,7 +254,6 @@
 .comments-text__label {
     font-family: Inter;
     font-weight: 700;
-    font-style: Bold;
     font-size: 20px;
     color: #000000;
     margin: 10px 0;

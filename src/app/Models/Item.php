@@ -39,4 +39,9 @@ class Item extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
 }

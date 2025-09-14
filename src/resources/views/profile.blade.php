@@ -8,24 +8,26 @@
 <div class="content">
     <div class="profile-box">
         <div class="profile-box__image">
-            <img class="img-content" src="{{ asset($user->profile_image) }}" alt="プロフィール画像">
+            <img class="img-content__profile" src="{{ asset($user->profile_image) }}" alt="プロフィール画像">
         </div>
         <div class="profile-info">
             <h2 class="profile-name">{{ $user->name }}</h2>
         </div>
-        <a class="profile-setting" href="/mypage/profile">プロフィールを編集</a>
+        <div class="profile-edit">
+            <a class="profile-setting" href="/mypage/profile">プロフィールを編集</a>
+        </div>
     </div>
     <div class="tab-menu">
-        <a class="tab-sale" href="/#">出品した商品</a>
-        <a class="tab-purchase" href="/#">購入した商品</a>
+        <a class="tab-sale {{ $page === 'sell' ? 'active' : '' }}" href="/mypage?page=sell">出品した商品</a>
+        <a class="tab-purchase {{ $page === 'buy' ? 'active' : '' }}" href="/mypage?page=buy">購入した商品</a>
     </div>
     <div class="item-contents">
         @foreach ($items as $item)
         <div class="item-card">
-            <a href="/item/{{$item->id}}" class="item-link">
-                <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
-                <div class="item-name">{{$item->name}}</div>
-            </a>
+            <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
+            <div class="item-name">
+                {{$item->name}}
+            </div>
         </div>
         @endforeach
     </div>

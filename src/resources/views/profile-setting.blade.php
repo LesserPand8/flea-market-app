@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/index.css') }}">
+<link rel="stylesheet" href="{{ asset('css/profile-setting.css') }}">
 @endsection
 
 @section('content')
@@ -9,17 +9,24 @@
     <div class="profile-setting__heading">
         <h2>プロフィール設定</h2>
     </div>
-    <div class="profile-image">
-        <output id="list" class="image_output"></output>
-        <input type="file" id="profile_image" class="image" name="profile_image">
-        <button class="profile-image__button">画像を変更</button>
-    </div>
     <div class="profile-setting__form">
-        <form class="profile-setting__form-container" action="/profile" method="post">
+        <form class="profile-setting__form-container" action="/profile" method="post" enctype="multipart/form-data">
             @csrf
+            <div class="profile-image">
+                <output id="list" class="image_output">
+                    @if ($user->profile_image)
+                    <img src="{{ asset('storage/profile_images/' . $user->profile_image) }}" alt="プロフィール画像">
+                    @else
+                    <img src="{{ asset('storage/images/default-profile.png') }}" alt="デフォルト画像">
+                    @endif
+                </output>
+                <input type="file" id="profile_image" class="image" name="profile_image">
+                <button class="profile-image__button">画像を選択する</button>
+            </div>
+
             <div class="form-group">
-                <label for="name">ユーザー名</label>
-                <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}">
+                <label class="form__label" for="name">ユーザー名</label>
+                <input class="form__input" type="text" id="name" name="name" value="{{ old('name', $user->name) }}">
                 <div class="form__error">
                     @error('name')
                     {{ $message }}
@@ -27,8 +34,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="postal_code">郵便番号</label>
-                <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}">
+                <label class="form__label" for="postal_code">郵便番号</label>
+                <input class="form__input" type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}">
                 <div class="form__error">
                     @error('postal_code')
                     {{ $message }}
@@ -36,8 +43,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="address">住所</label>
-                <input type="text" id="address" name="address" value="{{ old('address', $user->address) }}">
+                <label class="form__label" for="address">住所</label>
+                <input class="form__input" type="text" id="address" name="address" value="{{ old('address', $user->address) }}">
                 <div class="form__error">
                     @error('address')
                     {{ $message }}
@@ -45,8 +52,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="building_name">建物名</label>
-                <input type="text" id="building_name" name="building_name" value="{{ old('building_name', $user->building_name) }}">
+                <label class="form__label" for="building_name">建物名</label>
+                <input class="form__input" type="text" id="building_name" name="building_name" value="{{ old('building_name', $user->building_name) }}">
                 <div class="form__error">
                     @error('building_name')
                     {{ $message }}

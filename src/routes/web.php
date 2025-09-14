@@ -25,3 +25,5 @@ Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
 Route::post('/goods/{item_id}', [ItemController::class, 'goods']);
 Route::get('/sell', [ItemController::class, 'sell']);
 Route::post('/sell', [ItemController::class, 'sellRegister']);
+Route::get('/mypage', [ItemController::class, 'mypage']);
+Route::post('/profile', [ItemController::class, 'profileUpdate']);
