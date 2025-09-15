@@ -13,7 +13,10 @@
         @csrf
         <div class="form-group__image">
             <div class="form-group__label">商品画像</div>
-            <input class="form-group__input-image" type="file" id="image" name="image">
+            <div class="form-group__image-box">
+                <label for="image" class="custom-file-label">画像を選択する</label>
+                <input class="form-group__input-image" type="file" id="image" name="image" style="display:none;">
+            </div>
             <div class="form__error">
                 @error('image')
                 {{ $message }}

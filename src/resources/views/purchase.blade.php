@@ -55,6 +55,7 @@
                     <div class="address">
                         {{ $profile->address . $profile->building_name}}
                     </div>
+                    <input type="hidden" name="full_address" value="{{ $profile->address . $profile->building_name }}">
                 </div>
             </div>
         </div>

@@ -237,6 +237,6 @@ class ItemController extends Controller
             'user_id' => $user->id,
         ]);
 
-        return redirect('/mypage?page=buy')->with('success', '購入が完了しました。');
+        return redirect('/');
     }
 }
