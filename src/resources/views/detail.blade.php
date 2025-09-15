@@ -62,8 +62,8 @@
                 @foreach ($item->comments as $comment)
                 <div class="comment-profile">
                     <div class="comment__user-image">
-                        @if ($comment->user && $comment->user->profile && $comment->user->profile->image)
-                        <img src="{{ asset($comment->user->profile->image) }}" alt="プロフィール画像" class="profile-image">
+                        @if ($comment->user && $comment->user->profile && $comment->user->profile->profile_image)
+                        <img src="{{ asset($comment->user->profile->profile_image) }}" alt="プロフィール画像" class="profile-image">
                         @else
                         <img src="{{ asset('storage/images/default-profile.png') }}" alt="デフォルト画像" class="profile-image">
                         @endif
@@ -81,6 +81,11 @@
             <div class="comments-text__label">商品へのコメント</div>
             <textarea class="comments__input" name="comment" rows="4" placeholder="コメントを入力してください"></textarea>
             <input type="hidden" name="item_id" value="{{ $item->id }}">
+            <div class="form__error">
+                @error('comment')
+                {{ $message }}
+                @enderror
+            </div>
             <button class="comments__button">コメントを送信する</button>
         </form>
     </div>

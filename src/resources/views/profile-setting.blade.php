@@ -14,10 +14,10 @@
             @csrf
             <div class="profile-image">
                 <output id="list" class="image_output">
-                    @if ($user->profile_image)
-                    <img src="{{ asset('storage/profile_images/' . $user->profile_image) }}" alt="プロフィール画像">
+                    @if ($profile?->profile_image)
+                    <img src="{{ asset($profile->profile_image) }}" alt="プロフィール画像">
                     @else
-                    <img src="{{ asset('storage/images/default-profile.png') }}" alt="デフォルト画像">
+                    <img src="{{ asset('storage/images/             default-profile.png') }}" alt="デフォルト画像">
                     @endif
                 </output>
                 <input type="file" id="profile_image" class="image" name="profile_image">
@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <label class="form__label" for="name">ユーザー名</label>
-                <input class="form__input" type="text" id="name" name="name" value="{{ old('name', $user->name) }}">
+                <input class="form__input" type="text" id="name" name="name" value="{{ old('name', $user->name ?? '') }}">
                 <div class="form__error">
                     @error('name')
                     {{ $message }}
@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label class="form__label" for="postal_code">郵便番号</label>
-                <input class="form__input" type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}">
+                <input class="form__input" type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $profile->postal_code ?? '') }}">
                 <div class="form__error">
                     @error('postal_code')
                     {{ $message }}
@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
                 <label class="form__label" for="address">住所</label>
-                <input class="form__input" type="text" id="address" name="address" value="{{ old('address', $user->address) }}">
+                <input class="form__input" type="text" id="address" name="address" value="{{ old('address', $profile->address ?? '') }}">
                 <div class="form__error">
                     @error('address')
                     {{ $message }}
@@ -53,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label class="form__label" for="building_name">建物名</label>
-                <input class="form__input" type="text" id="building_name" name="building_name" value="{{ old('building_name', $user->building_name) }}">
+                <input class="form__input" type="text" id="building_name" name="building_name" value="{{ old('building_name', $profile->building_name ?? '') }}">
                 <div class="form__error">
                     @error('building_name')
                     {{ $message }}

@@ -19,11 +19,17 @@ Route::get('/search', [ItemController::class, 'search']);
 Route::get('/mypage/profile', [ItemController::class, 'profileSetting']);
 Route::get('/item/{id}', [ItemController::class, 'detail']);
 Route::get('/mylist', [ItemController::class, 'mylist'])->name('mylist');
-Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
+
 Route::post('/comment', [ItemController::class, 'comment']);
-Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
 Route::post('/goods/{item_id}', [ItemController::class, 'goods']);
+
 Route::get('/sell', [ItemController::class, 'sell']);
 Route::post('/sell', [ItemController::class, 'sellRegister']);
+
 Route::get('/mypage', [ItemController::class, 'mypage']);
 Route::post('/profile', [ItemController::class, 'profileUpdate']);
+
+Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
+Route::post('/purchase/{item_id}', [ItemController::class, 'purchaseDecision']);
+Route::get('/purchase/address/{item_id}', [ItemController::class, 'addressChanging']);
+Route::post('/purchase/address/{item_id}', [ItemController::class, 'addressUpdate']);

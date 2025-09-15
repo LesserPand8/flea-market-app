@@ -8,7 +8,7 @@
 <div class="content">
     <div class="profile-box">
         <div class="profile-box__image">
-            <img class="img-content__profile" src="{{ asset($user->profile_image) }}" alt="プロフィール画像">
+            <img class="img-content__profile" src="{{ asset($profile?->profile_image ?? 'storage/images/default-profile.png') }}" alt="プロフィール画像">
         </div>
         <div class="profile-info">
             <h2 class="profile-name">{{ $user->name }}</h2>

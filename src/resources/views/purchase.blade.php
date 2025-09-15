@@ -6,7 +6,8 @@
 
 @section('content')
 <div class="content">
-    <form class="purchase-form" action="">
+    <form class="purchase-form" action="/purchase/{{ $item->id }}" method="post">
+        @csrf
         <div class="purchase-container">
             <div class="item-box">
                 <div class="item-image">
@@ -32,22 +33,27 @@
                         <option class="method__input-label" value="カード払い">カード払い</option>
                     </select>
                 </div>
+                <div class="form__error">
+                    @error('method')
+                    {{ $message }}
+                    @enderror
+                </div>
             </div>
             <div class="address-box">
                 <div class="address-container">
                     <div class="address-label">
                         配送先
                     </div>
-                    <a href="" class="change-address">
+                    <a href="/purchase/address/{{ $item->id }}" class="change-address">
                         変更する
                     </a>
                 </div>
                 <div class="address-detail">
                     <div class="postal_code">
-                        〒 {{ $profile->postal_code ?? '未登録'}}
+                        〒 {{ $profile->postal_code }}
                     </div>
                     <div class="address">
-                        {{ $profile->address ?? '未登録' }}
+                        {{ $profile->address . $profile->building_name}}
                     </div>
                 </div>
             </div>
@@ -67,5 +73,4 @@
         </div>
     </form>
 </div>
-
 @endsection

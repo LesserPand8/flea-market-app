@@ -17,6 +17,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Good::class);
     }
 
+    public function profile()
+    {
+        return $this->hasOne(\App\Models\Profile::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

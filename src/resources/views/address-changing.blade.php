@@ -10,11 +10,11 @@
         <h2>住所の変更</h2>
     </div>
     <div class="address-changing__form">
-        <form class="address-changing__form-container" action="/profile" method="post">
+        <form class="address-changing__form-container" action="/purchase/address/{{ $item_id }}" method="post">
             @csrf
             <div class="form-group">
-                <label for="postal_code">郵便番号</label>
-                <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}">
+                <label class="form__label" for="postal_code">郵便番号</label>
+                <input class="form__input" type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $profile->postal_code) }}">
                 <div class="form__error">
                     @error('postal_code')
                     {{ $message }}
@@ -22,8 +22,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="address">住所</label>
-                <input type="text" id="address" name="address" value="{{ old('address', $user->address) }}">
+                <label class="form__label" for="address">住所</label>
+                <input class="form__input" type="text" id="address" name="address" value="{{ old('address', $profile->address) }}">
                 <div class="form__error">
                     @error('address')
                     {{ $message }}
@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="building_name">建物名</label>
-                <input type="text" id="building_name" name="building_name" value="{{ old('building_name', $user->building_name) }}">
+                <label class="form__label" for="building_name">建物名</label>
+                <input class="form__input" type="text" id="building_name" name="building_name" value="{{ old('building_name', $profile->building_name) }}">
                 <div class="form__error">
                     @error('building_name')
                     {{ $message }}

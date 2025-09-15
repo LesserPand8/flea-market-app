@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\ExhibitionRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\AddressRequest;
+use App\Http\Requests\CommentRequest;
+use App\Http\Requests\PurchaseRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Good;
 use App\Models\Comment;
 use App\Models\Profile;
+use App\Models\Purchase;
 
 class ItemController extends Controller
 {
@@ -22,7 +26,8 @@ class ItemController extends Controller
     public function profileSetting()
     {
         $user = Auth::user();
-        return view('profile-setting', compact('user'));
+        $profile = Profile::where('user_id', $user->id)->first();
+        return view('profile-setting', compact('user', 'profile'));
     }
 
     public function detail($id)
@@ -47,7 +52,7 @@ class ItemController extends Controller
         return view('index', compact('items'));
     }
 
-    public function comment(Request $request)
+    public function comment(CommentRequest $request)
     {
         if (!Auth::check()) {
             return redirect('/login');
@@ -140,6 +145,7 @@ class ItemController extends Controller
             return redirect('/login');
         }
         $user = Auth::user();
+        $profile = Profile::where('user_id', $user->id)->first();
         $page = $request->query('page', 'sell'); // デフォルトは'sell'
 
         if ($page === 'buy') {
@@ -154,7 +160,7 @@ class ItemController extends Controller
             })->get();
         }
 
-        return view('profile', compact('user', 'items', 'page'));
+        return view('profile', compact('user', 'items', 'page', 'profile'));
     }
 
     public function profileUpdate(ProfileRequest $request)
@@ -181,5 +187,56 @@ class ItemController extends Controller
         $profile->save();
 
         return redirect('/');
+    }
+
+    public function addressChanging($item_id)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        $user = Auth::user();
+        $profile = Profile::where('user_id', $user->id)->first();
+        return view('address-changing', compact('user', 'profile', 'item_id'));
+    }
+
+    public function addressUpdate(AddressRequest $request, $item_id)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        $user = Auth::user();
+
+        // profilesテーブルの更新
+        $profile = Profile::where('user_id', $user->id)->firstOrFail();
+        $profile->postal_code = $request->input('postal_code');
+        $profile->address = $request->input('address');
+        $profile->building_name = $request->input('building_name');
+        $profile->save();
+        return redirect("/purchase/{$item_id}");
+    }
+
+    public function purchaseDecision(PurchaseRequest $request, $item_id)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        $item = Item::findOrFail($item_id);
+        $user = Auth::user();
+
+        // profilesテーブルを確認し、なければ住所登録画面へリダイレクト
+        $profile = Profile::where('user_id', $user->id)->first();
+        if (!$profile || !$profile->postal_code || !$profile->address) {
+            return redirect("/purchase/address/{$item_id}")->with('error', '住所情報を登録してください。');
+        }
+
+
+        // 購入処理（purchasesテーブルにレコードを追加）
+        Purchase::create([
+            'item_id' => $item->id,
+            'user_id' => $user->id,
+        ]);
+
+        return redirect('/mypage?page=buy')->with('success', '購入が完了しました。');
     }
 }
