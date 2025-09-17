@@ -6,8 +6,7 @@ use App\Http\Controllers\DetailController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSettingController;
-use App\Models\Profile;
-use App\Models\Purchase;
+use App\Http\Controllers\SellController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +20,7 @@ use App\Models\Purchase;
 */
 
 Route::get('/', [ItemController::class, 'index']);
+Route::get('/search', [ItemController::class, 'search']);
 
 Route::get('/item/{id}', [DetailController::class, 'detail']);
 Route::post('/comment', [DetailController::class, 'comment']);
@@ -36,18 +36,5 @@ Route::get('/mypage', [ProfileController::class, 'mypage']);
 Route::get('/mypage/profile', [ProfileSettingController::class, 'profileSetting']);
 Route::post('/profile', [ProfileSettingController::class, 'profileUpdate']);
 
-
-
-Route::get('/search', [ItemController::class, 'search']);
-
-
-
-Route::get('/mylist', [ItemController::class, 'mylist'])->name('mylist');
-
-
-
-
-
-
-Route::get('/sell', [ItemController::class, 'sell']);
-Route::post('/sell', [ItemController::class, 'sellRegister']);
+Route::get('/sell', [SellController::class, 'sell']);
+Route::post('/sell', [SellController::class, 'sellRegister']);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
+use App\Models\User;
 
 class ProfileSettingController extends Controller
 {
@@ -21,8 +22,7 @@ class ProfileSettingController extends Controller
         if (!Auth::check()) {
             return redirect('/login');
         }
-
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $user->name = $request->input('name');
         $user->save();
 
