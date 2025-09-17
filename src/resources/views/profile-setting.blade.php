@@ -20,7 +20,9 @@
                     <img src="{{ asset('storage/images/default-profile.png') }}" alt="デフォルト画像">
                     @endif
                 </output>
-                <input type="file" id="profile_image" class="image" name="profile_image">
+                <label for="profile_image" class="custom-file-label">画像を選択する
+                    <input type="file" id="profile_image" class="image" name="profile_image">
+                </label>
             </div>
 
             <div class="form-group">

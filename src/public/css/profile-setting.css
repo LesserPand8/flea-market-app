@@ -24,7 +24,7 @@
     margin-bottom: 10px;
 }
 
-/* .custom-file-label {
+.custom-file-label {
     display: inline-block;
     padding: 10px 24px;
     background: #fff;
@@ -38,12 +38,17 @@
     text-align: center;
     font-family: Inter;
     font-weight: 700;
+    margin-left: 35px;
 }
 
 .custom-file-label:hover {
     background: #ffeaea;
     color: #c0392b;
-} */
+}
+
+.image {
+    display: none;
+}
 
 .form-group {
     display: flex;
