@@ -67,3 +67,7 @@
     vertical-align: middle;
     margin: 4px auto 4px 10px;
 }
+
+.active {
+    color: #ff0000;
+}
