@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Good;
+use App\Models\Sell;
 
 class ItemController extends Controller
 {
@@ -21,7 +22,12 @@ class ItemController extends Controller
                 $items = Item::whereIn('id', $itemIds)->get();
             }
         } else {
-            $items = Item::all();
+            if (Auth::check()) {
+                $myItemIds = Sell::where('user_id', Auth::id())->pluck('item_id');
+                $items = Item::whereNotIn('id', $myItemIds)->get();
+            } else {
+                $items = Item::all();
+            }
         }
         return view('index', compact('items', 'tab'));
     }
