@@ -17,11 +17,10 @@
                     @if ($profile?->profile_image)
                     <img src="{{ asset($profile->profile_image) }}" alt="プロフィール画像">
                     @else
-                    <img src="{{ asset('storage/images/             default-profile.png') }}" alt="デフォルト画像">
+                    <img src="{{ asset('storage/images/default-profile.png') }}" alt="デフォルト画像">
                     @endif
                 </output>
                 <input type="file" id="profile_image" class="image" name="profile_image">
-                <button class="profile-image__button">画像を選択する</button>
             </div>
 
             <div class="form-group">

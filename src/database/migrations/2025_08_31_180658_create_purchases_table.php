@@ -18,6 +18,7 @@ class CreatePurchasesTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('item_id');
             $table->string('method');
+            $table->string('full_address')->nullable();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();
         });

@@ -23,23 +23,9 @@ class ItemController extends Controller
         return view('index', compact('items'));
     }
 
-    public function profileSetting()
-    {
-        $user = Auth::user();
-        $profile = Profile::where('user_id', $user->id)->first();
-        return view('profile-setting', compact('user', 'profile'));
-    }
 
-    public function detail($id)
-    {
-        $item = Item::findOrFail($id);
-        $isLiked = false;
-        if (\Auth::check()) {
-            $user = \Auth::user();
-            $isLiked = $item->goods()->where('user_id', $user->id)->exists();
-        }
-        return view('detail', compact('item', 'isLiked'));
-    }
+
+
 
     public function mylist()
     {
@@ -52,51 +38,7 @@ class ItemController extends Controller
         return view('index', compact('items'));
     }
 
-    public function comment(CommentRequest $request)
-    {
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-        $item = Item::findOrFail($request->input('item_id'));
-        $comment = new Comment();
-        $comment->user_id = Auth::id();
-        $comment->item_id = $item->id;
-        $comment->comment = $request->input('comment');
-        $comment->save();
 
-        return redirect()->back();
-    }
-
-    public function purchase($id)
-    {
-        $item = Item::findOrFail($id);
-        $profile = Profile::where('user_id', auth()->id())->first();
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-        return view('purchase', compact('item', 'profile'));
-    }
-
-    public function goods(Request $request)
-    {
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-        $item = Item::findOrFail($request->input('item_id'));
-        $userId = Auth::id();
-        $existingGood = Good::where('user_id', $userId)->where('item_id', $item->id)->first();
-        if ($existingGood) {
-            // 既にいいねしていれば解除（削除）
-            $existingGood->delete();
-        } else {
-            // いいねしていなければ追加
-            $good = new Good();
-            $good->user_id = $userId;
-            $good->item_id = $item->id;
-            $good->save();
-        }
-        return redirect()->back();
-    }
 
     public function sell()
     {
@@ -137,106 +79,5 @@ class ItemController extends Controller
         $item->categories()->sync($validated['category']);
 
         return redirect('/')->with('success', 'Item listed successfully!');
-    }
-
-    public function mypage(Request $request)
-    {
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-        $user = Auth::user();
-        $profile = Profile::where('user_id', $user->id)->first();
-        $page = $request->query('page', 'sell'); // デフォルトは'sell'
-
-        if ($page === 'buy') {
-            // 購入した商品
-            $items = Item::whereHas('purchases', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })->get();
-        } else {
-            // 出品した商品
-            $items = Item::whereHas('sellers', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })->get();
-        }
-
-        return view('profile', compact('user', 'items', 'page', 'profile'));
-    }
-
-    public function profileUpdate(ProfileRequest $request)
-    {
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-
-        $user = Auth::user();
-        $user->name = $request->input('name');
-        $user->save();
-
-        // profilesテーブルの更新
-        $profile = Profile::firstOrNew(['user_id' => $user->id]);
-        if ($request->hasFile('profile_image')) {
-            $imageFile = $request->file('profile_image');
-            $imageName = uniqid() . '_' . $imageFile->getClientOriginalName();
-            $imageFile->storeAs('public/profiles', $imageName);
-            $profile->profile_image = 'storage/profiles/' . $imageName;
-        }
-        $profile->postal_code = $request->input('postal_code');
-        $profile->address = $request->input('address');
-        $profile->building_name = $request->input('building_name');
-        $profile->save();
-
-        return redirect('/');
-    }
-
-    public function addressChanging($item_id)
-    {
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-        $user = Auth::user();
-        $profile = Profile::where('user_id', $user->id)->first();
-        return view('address-changing', compact('user', 'profile', 'item_id'));
-    }
-
-    public function addressUpdate(AddressRequest $request, $item_id)
-    {
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-
-        $user = Auth::user();
-
-        // profilesテーブルの更新
-        $profile = Profile::where('user_id', $user->id)->firstOrFail();
-        $profile->postal_code = $request->input('postal_code');
-        $profile->address = $request->input('address');
-        $profile->building_name = $request->input('building_name');
-        $profile->save();
-        return redirect("/purchase/{$item_id}");
-    }
-
-    public function purchaseDecision(PurchaseRequest $request, $item_id)
-    {
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-        $item = Item::findOrFail($item_id);
-        $user = Auth::user();
-
-        // profilesテーブルを確認し、なければ住所登録画面へリダイレクト
-        $profile = Profile::where('user_id', $user->id)->first();
-        if (!$profile || !$profile->postal_code || !$profile->address) {
-            return redirect("/purchase/address/{$item_id}")->with('error', '住所情報を登録してください。');
-        }
-
-
-        // 購入処理（purchasesテーブルにレコードを追加）
-        Purchase::create([
-            'item_id' => $item->id,
-            'user_id' => $user->id,
-        ]);
-
-        return redirect('/');
     }
 }

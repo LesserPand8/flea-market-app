@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\DetailController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileSettingController;
+use App\Models\Profile;
+use App\Models\Purchase;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,21 +21,33 @@ use App\Http\Controllers\ItemController;
 */
 
 Route::get('/', [ItemController::class, 'index']);
+
+Route::get('/item/{id}', [DetailController::class, 'detail']);
+Route::post('/comment', [DetailController::class, 'comment']);
+Route::post('/goods/{item_id}', [DetailController::class, 'goods']);
+
+Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase']);
+Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchaseDecision']);
+Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'addressChanging']);
+Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'addressUpdate']);
+
+Route::get('/mypage', [ProfileController::class, 'mypage']);
+
+Route::get('/mypage/profile', [ProfileSettingController::class, 'profileSetting']);
+Route::post('/profile', [ProfileSettingController::class, 'profileUpdate']);
+
+
+
 Route::get('/search', [ItemController::class, 'search']);
-Route::get('/mypage/profile', [ItemController::class, 'profileSetting']);
-Route::get('/item/{id}', [ItemController::class, 'detail']);
+
+
+
 Route::get('/mylist', [ItemController::class, 'mylist'])->name('mylist');
 
-Route::post('/comment', [ItemController::class, 'comment']);
-Route::post('/goods/{item_id}', [ItemController::class, 'goods']);
+
+
+
+
 
 Route::get('/sell', [ItemController::class, 'sell']);
 Route::post('/sell', [ItemController::class, 'sellRegister']);
-
-Route::get('/mypage', [ItemController::class, 'mypage']);
-Route::post('/profile', [ItemController::class, 'profileUpdate']);
-
-Route::get('/purchase/{item_id}', [ItemController::class, 'purchase']);
-Route::post('/purchase/{item_id}', [ItemController::class, 'purchaseDecision']);
-Route::get('/purchase/address/{item_id}', [ItemController::class, 'addressChanging']);
-Route::post('/purchase/address/{item_id}', [ItemController::class, 'addressUpdate']);
