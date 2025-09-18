@@ -15,7 +15,12 @@
         <div class="item-card">
             <a href="/item/{{$item->id}}" class="item-link">
                 <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
-                <div class="item-name">{{$item->name}}</div>
+                <div class="item-name">
+                    {{$item->name}}
+                    @if($item->purchases && $item->purchases->count() > 0)
+                    <span class="sold-label">Sold</span>
+                    @endif
+                </div>
             </a>
         </div>
         @endforeach

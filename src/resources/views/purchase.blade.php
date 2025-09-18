@@ -27,10 +27,10 @@
                     支払い方法
                 </div>
                 <div class="method">
-                    <select class="method__input" id="method" name="method" value="{{ old('method') }}">
-                        <option hidden>選択してください</option>
-                        <option class="method__input-label" value="コンビニ払い">コンビニ払い</option>
-                        <option class="method__input-label" value="カード払い">カード払い</option>
+                    <select class="method__input" id="method" name="method" required>
+                        <option value="" hidden disabled selected>選択してください</option>
+                        <option class="method__input-label" value="コンビニ払い" {{ old('method') == 'コンビニ払い' ? 'selected' : '' }}>コンビニ払い</option>
+                        <option class="method__input-label" value="カード払い" {{ old('method') == 'カード払い' ? 'selected' : '' }}>カード払い</option>
                     </select>
                 </div>
                 <div class="form__error">
@@ -55,7 +55,7 @@
                     <div class="address">
                         {{ $profile->address . $profile->building_name}}
                     </div>
-                    <input type="hidden" name="full_address" value="{{ $profile->address . $profile->building_name }}">
+                    <input type="hidden" name="full_address" value="{{ $profile->postal_code . ' ' . $profile->address . $profile->building_name }}">
                 </div>
             </div>
         </div>
