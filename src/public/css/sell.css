@@ -1,3 +1,11 @@
+/* 画像プレビュー用 */
+.form-group__image-preview {
+    display: none;
+    max-height: 100px;
+    border-radius: 6px;
+    object-fit: contain;
+    margin-right: 30px;
+}
 .sell-content {
     display: flex;
     flex-direction: column;

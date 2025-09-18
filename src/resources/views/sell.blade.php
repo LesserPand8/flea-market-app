@@ -14,6 +14,7 @@
         <div class="form-group__image">
             <div class="form-group__label">商品画像</div>
             <div class="form-group__image-box">
+                <img id="image-preview" class="form-group__image-preview" src="" alt="" />
                 <label for="image" class="custom-file-label">画像を選択する</label>
                 <input class="form-group__input-image" type="file" id="image" name="image" style="display:none;">
             </div>
@@ -97,5 +98,26 @@
             </div>
             <button type="submit" class="btn">出品する</button>
     </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('image');
+        const preview = document.getElementById('image-preview');
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    preview.src = ev.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+        });
+    });
+</script>
 </div>
 @endsection
