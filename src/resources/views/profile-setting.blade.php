@@ -15,9 +15,9 @@
             <div class="profile-image">
                 <output id="list" class="image_output">
                     @if ($profile?->profile_image)
-                    <img src="{{ asset($profile->profile_image) }}" alt="プロフィール画像">
+                    <img id="profile-image-preview" src="{{ asset($profile->profile_image) }}" alt="プロフィール画像">
                     @else
-                    <img src="{{ asset('storage/images/default-profile.png') }}" alt="デフォルト画像">
+                    <img id="profile-image-preview" src="{{ asset('storage/images/default-profile.png') }}" alt="デフォルト画像">
                     @endif
                 </output>
                 <label for="profile_image" class="custom-file-label">画像を選択する
@@ -63,6 +63,22 @@
             </div>
             <button type="submit" class="btn">更新する</button>
         </form>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const input = document.getElementById('profile_image');
+                const preview = document.getElementById('profile-image-preview');
+                input.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(ev) {
+                            preview.src = ev.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+        </script>
     </div>
 </div>
 @endsection
