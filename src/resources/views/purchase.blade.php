@@ -67,9 +67,19 @@
                 </tr>
                 <tr class="confirmation-table__row">
                     <th class="confirmation__label">支払方法</th>
-                    <td class="confirmation__value">コンビニ払い</td>
+                    <td class="confirmation__value" id="selected-method"></td>
                 </tr>
             </table>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const methodSelect = document.getElementById('method');
+                    const methodDisplay = document.getElementById('selected-method');
+                    methodSelect.addEventListener('change', function() {
+                        const selected = methodSelect.options[methodSelect.selectedIndex].text;
+                        methodDisplay.textContent = selected;
+                    });
+                });
+            </script>
             <button class="purchase__button">購入する</button>
         </div>
     </form>
