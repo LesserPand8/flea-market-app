@@ -18,8 +18,11 @@
                 <a class="header__logo" href="/">
                     <img src="{{ asset('storage/images/logo.svg') }}" alt="coachtech">
                 </a>
-                <form class="search" action="/search" method="GET">
-                    <input class="search__input" type="text" name="keyword" placeholder="   なにをお探しですか？">
+                <form class="search" action="/" method="GET">
+                    <input class="search__input" type="text" name="keyword" placeholder="   なにをお探しですか？" value="{{ isset($keyword) ? $keyword : request('keyword', '') }}">
+                    @if(isset($tab) && $tab === 'mylist')
+                    <input type="hidden" name="tab" value="mylist">
+                    @endif
                 </form>
                 <div class="header-nav">
                     @if (!Auth::check())

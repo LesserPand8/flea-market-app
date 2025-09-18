@@ -13,29 +13,33 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'recommend');
+        $keyword = $request->query('keyword', '');
         if ($tab === 'mylist') {
             if (!Auth::check()) {
                 $items = collect();
             } else {
                 $user = Auth::user();
                 $itemIds = Good::where('user_id', $user->id)->pluck('item_id');
-                $items = Item::whereIn('id', $itemIds)->get();
+                $query = Item::whereIn('id', $itemIds);
+                if (!empty($keyword)) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                }
+                $items = $query->get();
             }
         } else {
             if (Auth::check()) {
                 $myItemIds = Sell::where('user_id', Auth::id())->pluck('item_id');
-                $items = Item::whereNotIn('id', $myItemIds)->get();
+                $query = Item::whereNotIn('id', $myItemIds);
             } else {
-                $items = Item::all();
+                $query = Item::query();
             }
+            if (!empty($keyword)) {
+                $query->where('name', 'like', '%' . $keyword . '%');
+            }
+            $items = $query->get();
         }
         return view('index', compact('items', 'tab'));
     }
 
-    public function search(Request $request)
-    {
-        $keyword = $request->input('keyword');
-        $items = Item::where('name', 'like', '%' . $keyword . '%')->get();
-        return view('index', compact('items'));
-    }
+    // 検索専用アクションは不要
 }
