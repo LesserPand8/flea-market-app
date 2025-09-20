@@ -1,0 +1,36 @@
+.verify-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+}
+
+.verify-title {
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+    margin-top: 32px;
+    text-align: center;
+}
+
+.verify-btn {
+    background: #e0e0e0;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.verify-link {
+    color: #2196f3;
+    text-decoration: none;
+    font-size: 0.95rem;
+    background: none;
+    border: none;
+}
+
+.verify-link:hover {
+    text-decoration: underline;
+}

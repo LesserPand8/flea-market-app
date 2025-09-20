@@ -8,7 +8,7 @@ class RegisterResponse implements RegisterResponseContract
 {
     public function toResponse($request)
     {
-        // 登録後のリダイレクト先を指定
-        return redirect('/mypage/profile');
+        // 登録後のリダイレクト先をメール認証誘導画面に変更
+        return redirect('/email/verify');
     }
 }

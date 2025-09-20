@@ -20,13 +20,13 @@ use App\Http\Controllers\SellController;
 */
 
 Route::get('/', [ItemController::class, 'index']);
-Route::get('/search', [ItemController::class, 'search']);
 
 Route::get('/item/{id}', [DetailController::class, 'detail']);
-Route::post('/comment', [DetailController::class, 'comment']);
-Route::post('/goods/{item_id}', [DetailController::class, 'goods']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/comment', [DetailController::class, 'comment']);
+    Route::post('/goods/{item_id}', [DetailController::class, 'goods']);
+
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase']);
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchaseDecision']);
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'addressChanging']);
@@ -40,3 +40,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sell', [SellController::class, 'sell']);
     Route::post('/sell', [SellController::class, 'sellRegister']);
 });
+
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+// メール認証完了時にプロフィール編集画面へ遷移
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/mypage/profile');
+})->middleware(['auth', 'signed'])->name('verification.verify');

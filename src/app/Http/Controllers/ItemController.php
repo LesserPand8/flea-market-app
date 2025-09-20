@@ -40,6 +40,4 @@ class ItemController extends Controller
         }
         return view('index', compact('items', 'tab'));
     }
-
-    // 検索専用アクションは不要
 }
