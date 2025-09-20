@@ -3,32 +3,40 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 60vh;
+    min-height: 40vh;
 }
 
 .verify-title {
-    font-size: 1.1rem;
     margin-bottom: 32px;
     margin-top: 32px;
     text-align: center;
+
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 18px;
 }
 
 .verify-btn {
-    background: #e0e0e0;
-    border: none;
-    border-radius: 4px;
+    background: #d9d9d9;
+    border: 1px solid #000000;
+    border-radius: 10px;
     padding: 10px 24px;
-    font-size: 1rem;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     cursor: pointer;
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 18px;
 }
 
 .verify-link {
-    color: #2196f3;
+    color: #0073cc;
     text-decoration: none;
-    font-size: 0.95rem;
     background: none;
     border: none;
+    margin-top: 30px;
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 16px;
 }
 
 .verify-link:hover {
