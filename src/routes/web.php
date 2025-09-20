@@ -26,15 +26,17 @@ Route::get('/item/{id}', [DetailController::class, 'detail']);
 Route::post('/comment', [DetailController::class, 'comment']);
 Route::post('/goods/{item_id}', [DetailController::class, 'goods']);
 
-Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase']);
-Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchaseDecision']);
-Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'addressChanging']);
-Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'addressUpdate']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase']);
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchaseDecision']);
+    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'addressChanging']);
+    Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'addressUpdate']);
 
-Route::get('/mypage', [ProfileController::class, 'mypage']);
+    Route::get('/mypage', [ProfileController::class, 'mypage']);
 
-Route::get('/mypage/profile', [ProfileSettingController::class, 'profileSetting']);
-Route::post('/profile', [ProfileSettingController::class, 'profileUpdate']);
+    Route::get('/mypage/profile', [ProfileSettingController::class, 'profileSetting']);
+    Route::post('/profile', [ProfileSettingController::class, 'profileUpdate']);
 
-Route::get('/sell', [SellController::class, 'sell']);
-Route::post('/sell', [SellController::class, 'sellRegister']);
+    Route::get('/sell', [SellController::class, 'sell']);
+    Route::post('/sell', [SellController::class, 'sellRegister']);
+});

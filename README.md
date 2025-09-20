@@ -22,6 +22,9 @@ DB_PORT=3306
 DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
+
+MAIL_FROM_ADDRESS=example@example.com
+MAIL_FROM_NAME="フリマアプリ"
 ```
 
 5. アプリケーションキーの作成
