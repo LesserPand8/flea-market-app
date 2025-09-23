@@ -13,15 +13,22 @@
     <div class="item-contents">
         @foreach ($items as $item)
         <div class="item-card">
+            @if($item->purchases && $item->purchases->count() > 0)
+            <div class="item-link disabled">
+                <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
+                <div class="item-name">
+                    {{$item->name}}
+                    <span class="sold-label">Sold</span>
+                </div>
+            </div>
+            @else
             <a href="/item/{{$item->id}}" class="item-link">
                 <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
                 <div class="item-name">
                     {{$item->name}}
-                    @if($item->purchases && $item->purchases->count() > 0)
-                    <span class="sold-label">Sold</span>
-                    @endif
                 </div>
             </a>
+            @endif
         </div>
         @endforeach
     </div>
