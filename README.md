@@ -12,7 +12,7 @@
 
 1. `docker-compose exec php bash`
 2. `composer install`
-3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.env ファイルを作成
+3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.env ファイルを作成（新規作成する場合のコマンド：cp .env.example .env）
 4. .env に以下の環境変数を追加
 
 ```text
@@ -47,9 +47,15 @@ php artisan db:seed
 
 ## 使用技術(実行環境)
 
-- PHP8.3.0
-- Laravel8.83.27
-- MySQL8.0.26
+- PHP 8.3.0
+- Laravel 8.83.27
+- MySQL 8.0.26
+- nginx 1.21.1
+- Docker / Docker Compose
+- phpMyAdmin
+- Mailhog
+- Node.js
+- Composer
 
 ## ER 図
 
@@ -57,5 +63,7 @@ php artisan db:seed
 
 ## URL
 
-- 開発環境：http://localhost/
-- phpMyAdmin:：http://localhost:8080/
+- 商品一覧画面：http://localhost/
+- ログイン画面：http://localhost/login
+- phpMyAdmin：http://localhost:8080/
+- mailhog：http://localhost:8025/

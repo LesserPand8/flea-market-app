@@ -26,6 +26,8 @@
     font-family: Inter;
     font-weight: 700;
     font-size: 18px;
+    text-decoration: none;
+    color: #000000;
 }
 
 .verify-link {
