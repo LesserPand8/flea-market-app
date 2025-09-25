@@ -7,6 +7,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSettingController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     $request->fulfill();
     return redirect('/mypage/profile');
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
+
+// 決済画面表示
+Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+// 決済処理実行
+Route::post('/payment', [PaymentController::class, 'store'])->name('payment.store');

@@ -12,8 +12,9 @@
 
 1. `docker-compose exec php bash`
 2. `composer install`
-3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.env ファイルを作成（新規作成する場合のコマンド：cp .env.example .env）
-4. .env に以下の環境変数を追加
+3. `composer require laravel/cashier`
+4. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.env ファイルを作成（新規作成する場合のコマンド：cp .env.example .env）
+5. .env に以下の環境変数を追加
 
 ```text
 DB_CONNECTION=mysql
@@ -25,21 +26,24 @@ DB_PASSWORD=laravel_pass
 
 MAIL_FROM_ADDRESS=example@example.com
 MAIL_FROM_NAME="フリマアプリ"
+
+STRIPE_PUBLIC_KEY={公開可能キー}
+STRIPE_SECRET_KEY={シークレットキー}
 ```
 
-5. アプリケーションキーの作成
+6. アプリケーションキーの作成
 
 ```bash
 php artisan key:generate
 ```
 
-6. マイグレーションの実行
+7. マイグレーションの実行
 
 ```bash
 php artisan migrate
 ```
 
-7. シーディングの実行
+8. シーディングの実行
 
 ```bash
 php artisan db:seed
