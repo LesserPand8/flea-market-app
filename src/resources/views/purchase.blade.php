@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="content">
-    <form class="purchase-form" action="/purchase/{{ $item->id }}" method="post">
+    <form class="purchase-form" id="purchase-form" action="/purchase/{{ $item->id }}" method="post">
         @csrf
         <div class="purchase-container">
             <div class="item-box">
@@ -80,7 +80,7 @@
                     });
                 });
             </script>
-            <button class="purchase__button">購入する</button>
+            <button class="purchase__button" id="purchase-btn" type="submit">購入する</button>
         </div>
     </form>
 </div>

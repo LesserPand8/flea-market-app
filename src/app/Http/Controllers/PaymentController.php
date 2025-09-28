@@ -4,46 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Stripe\Stripe;
-use Stripe\Customer;
-use Stripe\Charge;
-use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
     /**
      * 決済画面表示
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('payment.index');
-    }
-
-    /**
-     * 決済処理実行
-     */
-    public function store(Request $request)
-    {
-        try {
-            // APIキーをセットする
-            Stripe::setApiKey(config('services.stripe.secret_key'));
-            // 顧客を登録
-            $customer = Customer::create(array(
-                'email' => $request->stripeEmail,
-                'source' => $request->stripeToken
-            ));
-            // 顧客に紐づく決済を登録
-            $charge = Charge::create(array(
-                'customer' => $customer->id,
-                'amount' => 1000, // ここの金額はrequestで受け取るなりstore内で生成するなり
-                'currency' => 'jpy'
-            ));
-
-            // DBに登録が必要な場合は$customerや$chargeの情報を使用する
-
-            return redirect(route('payment.index', ['message' => '決済が完了しました！']));
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return redirect(route('payment.index', ['message' => '決済に失敗しました...']));
+        $item = null;
+        if (session('purchase_item_id')) {
+            $item = \App\Models\Item::find(session('purchase_item_id'));
         }
+        if (!$item) {
+            return view('payment.index', ['checkoutUrl' => null]);
+        }
+
+        // Stripe Checkoutセッション作成
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret_key'));
+        $user_id = session('purchase_user_id');
+        $full_address = session('purchase_full_address');
+        $session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'product_data' => [
+                        'name' => $item->name,
+                    ],
+                    'unit_amount' => $item->price,
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => url('/'),
+            'cancel_url' => url('/payment?cancel=1'),
+            'metadata' => [
+                'item_id' => $item->id,
+                'user_id' => $user_id,
+                'full_address' => $full_address,
+            ],
+        ]);
+        return view('payment.index', ['checkoutUrl' => $session->url]);
     }
 }

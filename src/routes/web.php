@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSettingController;
 use App\Http\Controllers\SellController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\StripeWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,5 +53,6 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 // 決済画面表示
 Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
-// 決済処理実行
-Route::post('/payment', [PaymentController::class, 'store'])->name('payment.store');
+
+// Stripe Webhook受信用
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle']);

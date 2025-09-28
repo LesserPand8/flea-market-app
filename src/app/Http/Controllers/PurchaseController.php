@@ -30,14 +30,23 @@ class PurchaseController extends Controller
         $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
-        // 購入処理（purchasesテーブルにレコードを追加）
+        if ($request->input('method') === 'カード払い') {
+            // 決済画面へリダイレクト（必要な情報をセッションで渡す）
+            session([
+                'purchase_item_id' => $item->id,
+                'purchase_user_id' => $user->id,
+                'purchase_full_address' => $request->input('full_address'),
+            ]);
+            return redirect()->route('payment.index');
+        }
+
+        // コンビニ払いは現状通り
         Purchase::create([
             'item_id' => $item->id,
             'user_id' => $user->id,
             'method' => $request->input('method'),
             'full_address' => $request->input('full_address'),
         ]);
-
         return redirect('/');
     }
 
