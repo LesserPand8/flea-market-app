@@ -196,7 +196,8 @@ class DetailTest extends TestCase
             'name' => 'コメントテスト商品',
         ]);
         // ログイン
-        $this->actingAs($user);
+        $this->actingAs($user instanceof \Illuminate\Database\Eloquent\Collection ? $user->first() : $user);
+
         // コメント送信前の状態（コメント数0）
         $response = $this->get('/item/' . $item->id);
         $response->assertStatus(200);
@@ -214,5 +215,77 @@ class DetailTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('1'); // コメント数増加
         $response->assertSee('テストコメント'); // コメント内容表示
+    }
+
+    /**
+     * 未ログインユーザーはコメントを送信できないテスト
+     */
+    public function test_guest_user_cannot_post_comment()
+    {
+        // 商品作成
+        $item = \App\Models\Item::factory()->create([
+            'name' => '未ログインコメントテスト商品',
+        ]);
+
+        // 未ログイン状態でコメント送信（POSTリクエスト）
+        $postResponse = $this->post('/comment', [
+            'item_id' => $item->id,
+            'comment' => '未ログインコメント',
+        ]);
+        // /login へリダイレクトされること
+        $postResponse->assertRedirect('/login');
+
+        // コメントがDBに保存されていないこと
+        $this->assertDatabaseMissing('comments', [
+            'item_id' => $item->id,
+            'comment' => '未ログインコメント',
+        ]);
+    }
+
+    /**
+     * 255文字以上のコメントを送信した場合、バリデーションメッセージが表示されるテスト
+     */
+    public function test_comment_validation_message_shown_when_comment_is_too_long()
+    {
+        // ユーザー作成
+        $user = \App\Models\User::factory()->create();
+        // 商品作成
+        $item = \App\Models\Item::factory()->create([
+            'name' => 'バリデーションテスト商品',
+        ]);
+        // ログイン
+        $this->actingAs($user instanceof \Illuminate\Database\Eloquent\Collection ? $user->first() : $user);
+
+        // 256文字のコメントを生成
+        $longComment = str_repeat('あ', 256);
+
+        // コメント送信（POSTリクエスト）
+        $response = $this->post('/comment', [
+            'item_id' => $item->id,
+            'comment' => $longComment,
+        ]);
+
+        // バリデーションエラー（セッションにエラーがあること）
+        $response->assertSessionHasErrors(['comment']);
+        // メッセージ内容（日本語）
+        $this->assertStringContainsString('商品コメントは255文字以内で入力してください', session('errors')->first('comment'));
+    }
+
+    /**
+     * コメント未入力時、バリデーションメッセージが表示されるテスト
+     */
+    public function test_comment_validation_message_shown_when_comment_is_empty()
+    {
+        $user = \App\Models\User::factory()->create();
+        $item = \App\Models\Item::factory()->create([
+            'name' => 'バリデーション空テスト商品',
+        ]);
+        $this->actingAs($user instanceof \Illuminate\Database\Eloquent\Collection ? $user->first() : $user);
+        $response = $this->post('/comment', [
+            'item_id' => $item->id,
+            'comment' => '',
+        ]);
+        $response->assertSessionHasErrors(['comment']);
+        $this->assertStringContainsString('商品コメントを入力してください', session('errors')->first('comment'));
     }
 }
