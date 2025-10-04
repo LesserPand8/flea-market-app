@@ -31,6 +31,7 @@ class ExhibitionRequest extends FormRequest
             'category.*' => 'integer|exists:categories,id',
             'condition' => ['required', 'string', 'in:良好,目立った傷や汚れなし,やや傷や汚れあり,状態が悪い'],
             'price' => 'required|integer|min:0',
+            'brand' => 'nullable|string',
         ];
     }
 
