@@ -1,5 +1,5 @@
 # 開発用テスト環境ファイルを除外
-
+src/.env.testing
 /node_modules
 /public/hot
 /storage/*.key
