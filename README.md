@@ -1,5 +1,11 @@
 # flea market app
 
+## プロジェクトの概要
+
+**サービス名**:coachtech フリマ<br>
+**サービス概要**:ある企業が開発した独自のフリマアプリ<br>
+**制作の背景と目的**:アイテムの出品と購入を行うためのフリマアプリを開発する<br>
+
 ## 環境構築
 
 **Docker ビルド**
@@ -252,6 +258,17 @@ colors="true"
 vendor/bin/phpunit
 ```
 
+## URL
+
+- 商品一覧画面：http://localhost/
+- ログイン画面：http://localhost/login
+- phpMyAdmin：http://localhost:8080/
+- mailhog：http://localhost:8025/
+
+## ER 図
+
+![alt](erd.png)
+
 ## 使用技術(実行環境)
 
 - PHP 8.3.0
@@ -264,18 +281,3 @@ vendor/bin/phpunit
 - Node.js
 - Composer
 - Stripe
-
-## ER 図
-
-![alt](erd.png)
-
-## URL
-
-- 商品一覧画面：http://localhost/
-- ログイン画面：http://localhost/login
-- phpMyAdmin：http://localhost:8080/
-- mailhog：http://localhost:8025/
-
-```
-
-```
