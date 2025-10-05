@@ -18,7 +18,6 @@ class ItemFactory extends Factory
             'price' => $this->faker->numberBetween(100, 10000),
             'image' => $this->faker->imageUrl(640, 480, 'cats'),
             'condition' => $this->faker->randomElement(['new', 'used']),
-            // 必要に応じて他のカラムも追加
         ];
     }
 }

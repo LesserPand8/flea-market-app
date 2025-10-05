@@ -11,13 +11,6 @@
     @yield('css')
 </head>
 
-<style>
-    .header {
-        background-color: #000000;
-        padding: 1rem;
-    }
-</style>
-
 <body>
     <header class="header">
         <div class="header__inner">
