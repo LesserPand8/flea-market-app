@@ -37,6 +37,12 @@ class PurchaseController extends Controller
                 'purchase_user_id' => $user->id,
                 'purchase_full_address' => $request->input('full_address'),
             ]);
+            Purchase::create([
+                'item_id' => $item->id,
+                'user_id' => $user->id,
+                'method' => $request->input('method'),
+                'full_address' => $request->input('full_address'),
+            ]);
             return redirect()->route('payment.index');
         }
 
