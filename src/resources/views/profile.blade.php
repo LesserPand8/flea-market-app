@@ -20,14 +20,29 @@
     <div class="tab-menu">
         <a class="tab-sale {{ $page === 'sell' ? 'active' : '' }}" href="/mypage?page=sell">出品した商品</a>
         <a class="tab-purchase {{ $page === 'buy' ? 'active' : '' }}" href="/mypage?page=buy">購入した商品</a>
+        <a class="tab-purchase {{ $page === 'trade' ? 'active' : '' }}" href="/mypage?page=trade">
+            取引中の商品
+            @if (!empty($tradeCount) && $tradeCount > 0)
+            <span class="tab-badge">{{ $tradeCount }}</span>
+            @endif
+        </a>
     </div>
     <div class="item-contents">
         @foreach ($items as $item)
         <div class="item-card">
+            @if ($page === 'trade')
+            <a href="/trading-chat/{{ $item->id }}">
+                <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
+                <div class="item-name">
+                    {{$item->name}}
+                </div>
+            </a>
+            @else
             <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
             <div class="item-name">
                 {{$item->name}}
             </div>
+            @endif
         </div>
         @endforeach
     </div>

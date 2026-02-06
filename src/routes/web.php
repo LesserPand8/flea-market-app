@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileSettingController;
 use App\Http\Controllers\SellController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StripeWebhookController;
+use App\Http\Controllers\TradingChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::get('/item/{id}', [DetailController::class, 'detail']);
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/comment', [DetailController::class, 'comment']);
     Route::post('/goods/{item_id}', [DetailController::class, 'goods']);
+    Route::post('/trade/{item_id}', [DetailController::class, 'trade']);
 
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase']);
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchaseDecision']);
@@ -41,6 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/sell', [SellController::class, 'sell']);
     Route::post('/sell', [SellController::class, 'sellRegister']);
+
+    Route::get('/trading-chat/{item_id}', [TradingChatController::class, 'show']);
+    Route::post('/trade/finish/{item_id}', [TradingChatController::class, 'finish']);
 });
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;

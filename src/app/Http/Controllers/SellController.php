@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\ExhibitionRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;

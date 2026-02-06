@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
+use App\Http\Requests\TransactionRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Comment;
 use App\Models\Good;
+use App\Models\Transaction;
 
 class DetailController extends Controller
 {
@@ -55,6 +57,32 @@ class DetailController extends Controller
             $good->item_id = $item->id;
             $good->save();
         }
+        return redirect()->back();
+    }
+
+    public function trade(TransactionRequest $request, $item_id)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+        $item = Item::findOrFail($item_id);
+        $userId = Auth::id();
+        $existingTransaction = Transaction::where('user_id', $userId)
+            ->where('item_id', $item->id)
+            ->first();
+
+        if ($existingTransaction) {
+            return redirect()->back()->withErrors([
+                'trade' => 'この商品の取引はすでに開始されています。',
+            ]);
+        }
+
+        // 取引テーブルに新しい取引を作成
+        $transaction = new Transaction();
+        $transaction->user_id = $userId;
+        $transaction->item_id = $item->id;
+        $transaction->save();
+
         return redirect()->back();
     }
 }

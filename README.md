@@ -269,6 +269,26 @@ vendor/bin/phpunit
 
 ![alt](erd.png)
 
+## テストアカウント
+
+name: user1  
+email: user1@example.com  
+password: testtest
+
+---
+
+name: user2  
+email: user2@example.com  
+password: testtest
+
+---
+
+name: user3  
+email: user3@example.com  
+password: testtest
+
+---
+
 ## 使用技術(実行環境)
 
 - PHP 8.3.0

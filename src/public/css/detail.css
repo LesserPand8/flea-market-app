@@ -282,6 +282,20 @@
     border: none;
 }
 
+.trade__button {
+    background-color: #ff5555;
+    color: #ffffff;
+    height: 40px;
+    width: 100%;
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 4px;
+    border: none;
+}
+
 .form__error {
     color: red;
     font-size: 14px;

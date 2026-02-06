@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Sell;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ItemsTableSeeder::class,
             CategoryItemTableSeeder::class,
             UsersTableSeeder::class,
+            SellsTableSeeder::class,
         ]);
     }
 }
