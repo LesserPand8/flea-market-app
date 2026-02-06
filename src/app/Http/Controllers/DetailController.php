@@ -67,6 +67,18 @@ class DetailController extends Controller
         }
         $item = Item::findOrFail($item_id);
         $userId = Auth::id();
+
+        // 他のユーザーが既に取引を開始しているかチェック
+        $otherTransaction = Transaction::where('item_id', $item->id)
+            ->where('user_id', '!=', $userId)
+            ->first();
+
+        if ($otherTransaction) {
+            return redirect()->back()->withErrors([
+                'trade' => '他のユーザーが既にこの商品の取引を開始しています。',
+            ]);
+        }
+
         $existingTransaction = Transaction::where('user_id', $userId)
             ->where('item_id', $item->id)
             ->first();
@@ -83,6 +95,6 @@ class DetailController extends Controller
         $transaction->item_id = $item->id;
         $transaction->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', '取引を開始しました。');
     }
 }
