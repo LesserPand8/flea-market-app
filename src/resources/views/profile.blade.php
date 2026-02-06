@@ -31,7 +31,7 @@
         @foreach ($items as $item)
         <div class="item-card">
             @if ($page === 'trade')
-            <a href="/trading-chat/{{ $item->id }}">
+            <a href="/trade/chat/{{ $item->id }}">
                 <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
                 <div class="item-name">
                     {{$item->name}}

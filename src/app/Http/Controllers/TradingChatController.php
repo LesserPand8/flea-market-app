@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Profile;
 use App\Models\Transaction;
+use App\Models\Message;
+use App\Http\Requests\TradingChatRequest;
 
 class TradingChatController extends Controller
 {
@@ -87,5 +89,36 @@ class TradingChatController extends Controller
         }
 
         return redirect('/mypage?page=trade')->with('success', '取引が完了しました。');
+    }
+
+    public function message(TradingChatRequest $request)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        $validated = $request->validated();
+
+        $item_id = $validated['item_id'];
+        $messageText = $validated['message_text'];
+        $imagePath = null;
+
+        // 画像をアップロード
+        if ($request->hasFile('chat_image')) {
+            $imageFile = $request->file('chat_image');
+            $imageName = uniqid() . '_' . $imageFile->getClientOriginalName();
+            $imageFile->storeAs('public/messages', $imageName);
+            $imagePath = 'storage/messages/' . $imageName;
+        }
+
+        // メッセージをデータベースに保存
+        Message::create([
+            'user_id' => Auth::id(),
+            'item_id' => $item_id,
+            'message' => $messageText,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->back()->with('success', 'メッセージを送信しました。');
     }
 }

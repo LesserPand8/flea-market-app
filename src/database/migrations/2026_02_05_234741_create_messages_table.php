@@ -15,7 +15,12 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('user_id');
+            $table->foreignId('item_id');
+            $table->text('message');
+            $table->string('image')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->nullable();
         });
     }
 

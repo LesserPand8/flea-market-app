@@ -44,8 +44,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sell', [SellController::class, 'sell']);
     Route::post('/sell', [SellController::class, 'sellRegister']);
 
-    Route::get('/trading-chat/{item_id}', [TradingChatController::class, 'show']);
+    Route::get('/trade/chat/{item_id}', [TradingChatController::class, 'show']);
     Route::post('/trade/finish/{item_id}', [TradingChatController::class, 'finish']);
+    Route::post('/trade/chat/message', [TradingChatController::class, 'message']);
 });
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;

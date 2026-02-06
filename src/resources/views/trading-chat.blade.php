@@ -12,7 +12,7 @@
         </div>
         <div class="other-trade-list">
             @foreach($otherTradeItems as $tradeItem)
-            <a href="/trading-chat/{{ $tradeItem->id }}" class="trade-item">
+            <a href="/trade/chat/{{ $tradeItem->id }}" class="trade-item">
                 <div class="trade-item__name">{{ $tradeItem->name }}</div>
             </a>
             @endforeach
@@ -49,12 +49,24 @@
         <div class="chat">
 
         </div>
-        <form action="" class="chat-input">
-            <input type="text" class="chat-input__text" placeholder="  取引メッセージを記入してください">
+        @if ($errors->any())
+        <div class="chat-input__error">
+            @foreach ($errors->all() as $error)
+            <div class="error-message">{{ $error }}</div>
+            @endforeach
+        </div>
+        @endif
+        <form action="/trade/chat/message" method="POST" class="chat-input" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="item_id" value="{{ $item->id }}">
+            <input type="text" class="chat-input__text" name="message_text" placeholder="  取引メッセージを記入してください" value="{{ old('message_text') }}">
             <label for="chat-input__image" class="chat-input__image-label">画像を追加
-                <input type="file" id="chat-input__image" class="chat-input__image" name="chat_image">
+                <input type="file" id="chat-input__image" class="chat-input__image" name="chat_image" accept=".png,.jpeg,.jpg">
             </label>
-            <button type="submit" class="chat-input__button">送信</button>
+            <button type="submit" class="chat-input__button">
+                <img src="{{ asset('storage/images/Submit Button.jpg') }}" alt="送信" class="chat-input__button-image">
+            </button>
         </form>
     </div>
-    @endsection
+</div>
+@endsection
