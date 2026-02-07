@@ -28,7 +28,11 @@
             </div>
             @if($isPurchaser)
             <div class="trade-form">
+                @if($isCompleted)
+                <div class="trade__waiting">取引相手からの評価待ち</div>
+                @else
                 <button type="button" class="trade__button" id="openEvaluationModal">取引を完了する</button>
+                @endif
             </div>
             @endif
         </div>
@@ -94,11 +98,45 @@
 </div>
 </div>
 
-@if($isPurchaser)
+@if($isPurchaser && !$isCompleted)
 <div class="evaluation-modal" id="evaluationModal">
     <div class="evaluation-modal__overlay" id="evaluationModalOverlay"></div>
     <div class="evaluation-modal__content">
         <div class="evaluation-modal__header">取引が完了しました。</div>
+        <div class="evaluation-modal__subtitle">今回の取引相手はどうでしたか？</div>
+
+        @if ($errors->has('evaluation_score'))
+        <div class="evaluation-modal__error">{{ $errors->first('evaluation_score') }}</div>
+        @endif
+
+        <form id="evaluationForm" action="/trade/finish/{{ $item->id }}" method="POST" class="evaluation-modal__form">
+            @csrf
+            <div class="evaluation-stars" id="starRating">
+                <input type="radio" name="evaluation_score" value="1" id="star1" class="star-input">
+                <label for="star1" class="star-label">★</label>
+                <input type="radio" name="evaluation_score" value="2" id="star2" class="star-input">
+                <label for="star2" class="star-label">★</label>
+                <input type="radio" name="evaluation_score" value="3" id="star3" class="star-input">
+                <label for="star3" class="star-label">★</label>
+                <input type="radio" name="evaluation_score" value="4" id="star4" class="star-input">
+                <label for="star4" class="star-label">★</label>
+                <input type="radio" name="evaluation_score" value="5" id="star5" class="star-input">
+                <label for="star5" class="star-label">★</label>
+            </div>
+
+            <div class="evaluation-modal__actions">
+                <button type="submit" class="evaluation-modal__submit">送信する</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endif
+
+@if(!$isPurchaser && $showEvaluationModal)
+<div class="evaluation-modal is-open" id="evaluationModal">
+    <div class="evaluation-modal__overlay" id="evaluationModalOverlay"></div>
+    <div class="evaluation-modal__content">
+        <div class="evaluation-modal__header">購入者が取引を完了しました。</div>
         <div class="evaluation-modal__subtitle">今回の取引相手はどうでしたか？</div>
 
         @if ($errors->has('evaluation_score'))

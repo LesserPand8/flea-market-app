@@ -77,7 +77,17 @@ class TradingChatController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
-        return view('trading-chat', compact('item', 'currentUser', 'otherUser', 'profile', 'isPurchaser', 'otherTradeItems', 'messages'));
+        // 取引完了状態を確認
+        $transaction = $myTransaction ?? $othersTransaction;
+        $isCompleted = $transaction ? $transaction->is_completed : false;
+
+        // 出品者側で購入者が評価済みの場合、自動でモーダルを表示
+        $showEvaluationModal = false;
+        if (!$isPurchaser && $isCompleted) {
+            $showEvaluationModal = true;
+        }
+
+        return view('trading-chat', compact('item', 'currentUser', 'otherUser', 'profile', 'isPurchaser', 'otherTradeItems', 'messages', 'isCompleted', 'showEvaluationModal'));
     }
 
     public function finish(EvalitionRequest $request, $item_id)
@@ -121,14 +131,27 @@ class TradingChatController extends Controller
             'evaluation_score' => $validated['evaluation_score'],
         ]);
 
-        // 取引を削除
+        // 取引の完了処理
         if ($myTransaction) {
-            $myTransaction->delete();
-        } else {
+            // 購入者が評価した場合
+            if ($myTransaction->is_completed) {
+                // 既に完了フラグが立っている場合（出品者が先に評価済み）
+                // 両者評価済みなので取引を削除
+                $myTransaction->delete();
+            } else {
+                // まだ出品者が評価していない場合
+                // 完了フラグを立てる
+                $myTransaction->is_completed = true;
+                $myTransaction->save();
+            }
+        } elseif ($isSeller) {
+            // 出品者が評価した場合
             $othersTransaction = Transaction::where('item_id', $item_id)
                 ->where('user_id', '!=', $currentUser->id)
                 ->first();
+
             if ($othersTransaction) {
+                // 購入者が既に評価済み（is_completed = true）なので削除
                 $othersTransaction->delete();
             }
         }
