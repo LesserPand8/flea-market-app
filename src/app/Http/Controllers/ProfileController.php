@@ -86,8 +86,10 @@ class ProfileController extends Controller
             // 両方をマージ（重複削除）
             $items = $myTrades->merge($othersTradeOnMySells)->unique('id')->values();
 
-            // 各商品ごとの新規メッセージ数を計算
+            // 各商品ごとの新規メッセージ数と最新メッセージ日時を計算
             $itemNewMessageCounts = [];
+            $itemLatestMessageTimes = [];
+
             foreach ($items as $item) {
                 $myLatestMessage = Message::where('item_id', $item->id)
                     ->where('user_id', $user->id)
@@ -105,7 +107,22 @@ class ProfileController extends Controller
                         ->count();
                 }
                 $itemNewMessageCounts[$item->id] = $newCount;
+
+                // 最新の相手メッセージの日時を取得（ソート用）
+                $latestOpponentMessage = Message::where('item_id', $item->id)
+                    ->where('user_id', '!=', $user->id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                $itemLatestMessageTimes[$item->id] = $latestOpponentMessage
+                    ? $latestOpponentMessage->created_at
+                    : null;
             }
+
+            // 最新メッセージが来た順にソート（新しい順）
+            $items = $items->sortByDesc(function ($item) use ($itemLatestMessageTimes) {
+                return $itemLatestMessageTimes[$item->id] ?? '1970-01-01 00:00:00';
+            })->values();
         } else {
             // 出品した商品
             $items = Item::whereHas('sellers', function ($query) use ($user) {

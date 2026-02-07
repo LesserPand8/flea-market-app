@@ -11,7 +11,7 @@
             <img class="img-content__profile" src="{{ asset($profile?->profile_image ?? 'storage/images/default-profile.png') }}" alt="プロフィール画像">
         </div>
         <div class="profile-info">
-            <h2 class="profile-name">{{ $user->name }}</h2>
+            <div class="profile-name">{{ $user->name }}</div>
         </div>
         <div class="profile-edit">
             <a class="profile-setting" href="/mypage/profile">プロフィールを編集</a>
