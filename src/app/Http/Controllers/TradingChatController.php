@@ -156,7 +156,7 @@ class TradingChatController extends Controller
             }
         }
 
-        return redirect('/mypage?page=trade')->with('success', '取引が完了しました。');
+        return redirect('/')->with('success', '取引が完了しました。');
     }
 
     public function message(TradingChatRequest $request)
