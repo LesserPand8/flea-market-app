@@ -167,7 +167,8 @@
 @endif
 
 <script>
-    const storageKey = 'chat_message_{{ $item->id }}';
+    const currentUserId = '{{ $currentUser->id }}';
+    const storageKey = `chat_message_{{ $item->id }}_user_${currentUserId}`;
     const messageInput = document.getElementById('message_text');
 
     // ページ読み込み時にローカルストレージから値を復元
@@ -184,29 +185,32 @@
     }
 
     // フォーム送信時に保存済みメッセージを削除
-    messageInput.closest('form').addEventListener('submit', function() {
-        // 送信成功時にのみ削除されるようにするため、成功時の処理は後述
-        setTimeout(function() {
-            if (messageInput.value) {
-                // 送信後の画面遷移時に削除
-                localStorage.removeItem(storageKey);
-            }
-        }, 1000);
+    messageInput.closest('form').addEventListener('submit', function(e) {
+        const form = this;
+        // フォーム送信完了時に削除するフラグをセット
+        form.dataset.submitted = 'true';
     });
 
     // ページ読み込み時に復元
-    document.addEventListener('DOMContentLoaded', restoreMessage);
+    document.addEventListener('DOMContentLoaded', function() {
+        restoreMessage();
+        // ページロード時、POSTリダイレクト後の場合は削除
+        // （新しいページ読み込みの場合はmessageInputが空なので、復元されていない＝成功）
+    });
 
     // リアルタイム保存
     messageInput.addEventListener('input', saveMessage);
 
     // ページを離れる前に保存
-    window.addEventListener('beforeunload', saveMessage);
-
-    // 送信成功時にメッセージをクリア（successメッセージがある場合）
-    if (document.querySelector('[class*="success"]')) {
-        localStorage.removeItem(storageKey);
-    }
+    window.addEventListener('beforeunload', function(e) {
+        const form = messageInput.closest('form');
+        // フォーム送信済みの場合は削除、そうでなければ保存
+        if (form && form.dataset.submitted === 'true') {
+            localStorage.removeItem(storageKey);
+        } else if (messageInput.value) {
+            saveMessage();
+        }
+    });
 
     // 評価モーダル制御
     const evaluationModal = document.getElementById('evaluationModal');
