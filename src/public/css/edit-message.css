@@ -205,11 +205,95 @@
     }
 }
 
-/* タブレット（768-1024px）用 */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* タブレット（768-850px）用 */
+@media (min-width: 768px) and (max-width: 850px) {
     .edit-message {
         max-width: 600px;
         margin: 30px auto;
         padding: 0 20px;
+    }
+
+    .edit-message__container {
+        padding: 20px;
+        border-radius: 6px;
+    }
+
+    .edit-message__title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .item-info {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 6px;
+    }
+
+    .item-info__label {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .item-info__content {
+        gap: 15px;
+    }
+
+    .item-info__image {
+        width: 80px;
+        height: 80px;
+    }
+
+    .item-name {
+        font-size: 16px;
+    }
+
+    .item-price {
+        font-size: 14px;
+    }
+
+    .error-message {
+        font-size: 14px;
+    }
+
+    .edit-message__form {
+        gap: 18px;
+    }
+
+    .form-label {
+        font-size: 13px;
+    }
+
+    .form-textarea,
+    .form-file {
+        font-size: 14px;
+    }
+
+    .form-hint {
+        font-size: 12px;
+    }
+
+    .current-image {
+        padding: 12px;
+    }
+
+    .current-image__label {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .current-image__img {
+        max-width: 150px;
+        max-height: 150px;
+    }
+
+    .form-actions {
+        gap: 10px;
+    }
+
+    .btn-submit,
+    .btn-cancel {
+        font-size: 14px;
+        height: 36px;
+        padding: 4px 12px;
     }
 }
