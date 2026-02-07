@@ -12,6 +12,19 @@
         </div>
         <div class="profile-info">
             <div class="profile-name">{{ $user->name }}</div>
+            @if ($evaluationAverage !== null)
+            <div class="profile-rating">
+                <span class="rating-stars">
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <=$evaluationAverage)
+                        <span class="star-filled">★</span>
+                @else
+                <span class="star-empty">★</span>
+                @endif
+                @endfor
+                </span>
+            </div>
+            @endif
         </div>
         <div class="profile-edit">
             <a class="profile-setting" href="/mypage/profile">プロフィールを編集</a>

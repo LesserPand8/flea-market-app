@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Profile;
 use App\Models\Message;
+use App\Models\Evaluation;
 
 class ProfileController extends Controller
 {
@@ -132,6 +133,15 @@ class ProfileController extends Controller
             $itemNewMessageCounts = [];
         }
 
-        return view('profile', compact('user', 'items', 'page', 'profile', 'tradeCount', 'newMessageCount', 'itemNewMessageCounts'));
+        // 他ユーザーからの評価平均を計算
+        $evaluationAverage = null;
+        $evaluationCount = Evaluation::where('user_id', $user->id)->count();
+
+        if ($evaluationCount > 0) {
+            $average = Evaluation::where('user_id', $user->id)->avg('evaluation_score');
+            $evaluationAverage = round($average); // 四捨五入
+        }
+
+        return view('profile', compact('user', 'items', 'page', 'profile', 'tradeCount', 'newMessageCount', 'itemNewMessageCounts', 'evaluationAverage', 'evaluationCount'));
     }
 }
