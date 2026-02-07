@@ -13,7 +13,7 @@ use App\Models\Evaluation;
 use App\Models\Purchase;
 use App\Mail\TradeCompletedNotification;
 use App\Http\Requests\TradingChatRequest;
-use App\Http\Requests\EvalitionRequest;
+use App\Http\Requests\EvaluationRequest;
 
 class TradingChatController extends Controller
 {
@@ -93,7 +93,7 @@ class TradingChatController extends Controller
         return view('trading-chat', compact('item', 'currentUser', 'otherUser', 'profile', 'isPurchaser', 'otherTradeItems', 'messages', 'isCompleted', 'showEvaluationModal'));
     }
 
-    public function finish(EvalitionRequest $request, $item_id)
+    public function finish(EvaluationRequest $request, $item_id)
     {
         if (!Auth::check()) {
             return redirect('/login');

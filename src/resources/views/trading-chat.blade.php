@@ -24,7 +24,7 @@
                 <img class="img-content__profile" src="{{ asset($profile?->profile_image ?? 'storage/images/default-profile.png') }}" alt="プロフィール画像">
             </div>
             <div class="profile-info">
-                <h2 class="profile-name"> 「{{ $otherUser->name }}」さんとの取引画面</h2>
+                <h1 class="profile-name"> 「{{ $otherUser->name }}」さんとの取引画面</h1>
             </div>
             @if($isPurchaser)
             <div class="trade-form">

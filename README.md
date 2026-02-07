@@ -267,7 +267,7 @@ vendor/bin/phpunit
 
 ## ER 図
 
-![alt](erd.png)
+![alt](ER.png)
 
 ## テストアカウント
 
