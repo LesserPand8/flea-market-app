@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Item;
 use App\Models\Profile;
 use App\Models\Transaction;
 use App\Models\Message;
 use App\Models\Evaluation;
+use App\Mail\TradeCompletedNotification;
 use App\Http\Requests\TradingChatRequest;
 use App\Http\Requests\EvalitionRequest;
 
@@ -143,6 +145,10 @@ class TradingChatController extends Controller
                 // 完了フラグを立てる
                 $myTransaction->is_completed = true;
                 $myTransaction->save();
+
+                // 出品者にメール送信
+                $seller = $item->sellers()->first();
+                Mail::to($seller->email)->send(new TradeCompletedNotification($item, $currentUser, $seller));
             }
         } elseif ($isSeller) {
             // 出品者が評価した場合
