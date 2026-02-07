@@ -70,7 +70,12 @@ class TradingChatController extends Controller
         // 両方をマージ（重複削除）
         $otherTradeItems = $myTrades->merge($othersTradeOnMySells)->unique('id')->values();
 
-        return view('trading-chat', compact('item', 'currentUser', 'otherUser', 'profile', 'isPurchaser', 'otherTradeItems'));
+        // メッセージを古い順に取得
+        $messages = Message::where('item_id', $item_id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return view('trading-chat', compact('item', 'currentUser', 'otherUser', 'profile', 'isPurchaser', 'otherTradeItems', 'messages'));
     }
 
     public function finish(Request $request, $item_id)
@@ -120,5 +125,43 @@ class TradingChatController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'メッセージを送信しました。');
+    }
+
+    public function deleteMessage($message_id)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        $message = Message::findOrFail($message_id);
+
+        // 自分のメッセージであることを確認
+        if ($message->user_id !== Auth::id()) {
+            return redirect()->back()->withErrors(['message' => 'このメッセージは削除できません。']);
+        }
+
+        $item_id = $message->item_id;
+        $message->delete();
+
+        return redirect("/trade/chat/{$item_id}")->with('success', 'メッセージを削除しました。');
+    }
+
+    public function editMessage($message_id)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        $message = Message::findOrFail($message_id);
+
+        // 自分のメッセージであることを確認
+        if ($message->user_id !== Auth::id()) {
+            return redirect()->back()->withErrors(['message' => 'このメッセージは編集できません。']);
+        }
+
+        $item_id = $message->item_id;
+        $message->delete();
+
+        return redirect("/trade/chat/{$item_id}")->with('success', 'メッセージを編集しました。');
     }
 }

@@ -47,26 +47,51 @@
             </div>
         </div>
         <div class="chat">
-
+            @foreach($messages as $message)
+            <div class="chat-container @if($message->user_id === $currentUser->id) chat-container--self @else chat-container--other @endif">
+                <div class="chat-user @if($message->user_id === $currentUser->id) chat-user--self @else chat-user--other @endif"">
+                    <div class=" chat-user__image-box">
+                    <img class="chat-user__image" src="{{ asset($message->user->profile?->profile_image ?? 'storage/images/default-profile.png') }}" alt="プロフィール画像">
+                </div>
+                <div class="chat-user__name">{{ $message->user->name }}</div>
+            </div>
+            <div class="chat-messages">
+                @if($message->image)
+                <img src="{{ asset($message->image) }}" alt="メッセージ画像" class="chat-message__image">
+                @endif
+                <div class="chat-message">{{ $message->message }}</div>
+                @if($message->user_id === $currentUser->id)
+                <div class="chat-message__actions">
+                    <a href="/trade/chat/message/{{ $message->id }}/edit" class="chat-message__edit">編集</a>
+                    <form action="/trade/chat/message/{{ $message->id }}/delete" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="chat-message__delete" onclick="return confirm('削除してもよろしいですか？')">削除</button>
+                    </form>
+                </div>
+                @endif
+            </div>
         </div>
-        @if ($errors->any())
-        <div class="chat-input__error">
-            @foreach ($errors->all() as $error)
-            <div class="error-message">{{ $error }}</div>
-            @endforeach
-        </div>
-        @endif
-        <form action="/trade/chat/message" method="POST" class="chat-input" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="item_id" value="{{ $item->id }}">
-            <input type="text" class="chat-input__text" name="message_text" placeholder="  取引メッセージを記入してください" value="{{ old('message_text') }}">
-            <label for="chat-input__image" class="chat-input__image-label">画像を追加
-                <input type="file" id="chat-input__image" class="chat-input__image" name="chat_image" accept=".png,.jpeg,.jpg">
-            </label>
-            <button type="submit" class="chat-input__button">
-                <img src="{{ asset('storage/images/Submit Button.jpg') }}" alt="送信" class="chat-input__button-image">
-            </button>
-        </form>
+        @endforeach
     </div>
+    @if ($errors->any())
+    <div class="chat-input__error">
+        @foreach ($errors->all() as $error)
+        <div class="error-message">{{ $error }}</div>
+        @endforeach
+    </div>
+    @endif
+    <form action="/trade/chat/message" method="POST" class="chat-input" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="item_id" value="{{ $item->id }}">
+        <input type="text" class="chat-input__text" name="message_text" placeholder="  取引メッセージを記入してください" value="{{ old('message_text') }}">
+        <label for="chat-input__image" class="chat-input__image-label">画像を追加
+            <input type="file" id="chat-input__image" class="chat-input__image" name="chat_image" accept=".png,.jpeg,.jpg">
+        </label>
+        <button type="submit" class="chat-input__button">
+            <img src="{{ asset('storage/images/Submit Button.jpg') }}" alt="送信" class="chat-input__button-image">
+        </button>
+    </form>
+</div>
 </div>
 @endsection
