@@ -13,7 +13,7 @@
     <div class="item-contents">
         @foreach ($items as $item)
         <div class="item-card">
-            @if($item->purchases && $item->purchases->count() > 0)
+            @if(($item->purchases && $item->purchases->count() > 0) || ($item->trades && $item->trades->count() > 0))
             <div class="item-link disabled">
                 <div class="sold-label">Sold</div>
                 <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />

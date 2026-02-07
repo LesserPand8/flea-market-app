@@ -70,6 +70,7 @@ class ProfileController extends Controller
             $items = Item::whereHas('purchases', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->get();
+            $itemNewMessageCounts = [];
         } elseif ($page === 'trade') {
             // 取引中の商品：自分が取引開始した商品
             $myTrades = Item::whereHas('trades', function ($query) use ($user) {

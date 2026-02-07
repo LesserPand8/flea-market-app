@@ -12,5 +12,8 @@ class Transaction extends Model
     protected $fillable = [
         'user_id',
         'item_id',
+        'method',
+        'full_address',
+        'is_completed',
     ];
 }

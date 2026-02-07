@@ -18,6 +18,8 @@ class CreateTransactionsTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('item_id');
             $table->boolean('is_completed')->default(false);
+            $table->string('method')->nullable();
+            $table->string('full_address')->nullable();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();
         });

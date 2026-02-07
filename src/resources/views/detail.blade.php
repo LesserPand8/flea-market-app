@@ -88,20 +88,6 @@
             </div>
             <button class="comments__button">コメントを送信する</button>
         </form>
-        <form class="trade-form" action="/trade/{{ $item->id }}" method="POST">
-            @csrf
-            <button class="trade__button">取引を開始する</button>
-            <div class="form__error">
-                @error('trade')
-                {{ $message }}
-                @enderror
-            </div>
-            @if ($message = Session::get('success'))
-            <div class="alert alert-success">
-                {{ $message }}
-            </div>
-            @endif
-        </form>
     </div>
 </div>
 @endsection

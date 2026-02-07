@@ -39,10 +39,12 @@ class PurchaseController extends Controller
                 'purchase_method' => $request->input('method'),
                 'purchase_full_address' => $request->input('full_address'),
             ]);
-            // 取引中に追加
+            // 取引中に追加（購入情報も保存）
             Transaction::create([
                 'item_id' => $item->id,
                 'user_id' => $user->id,
+                'method' => $request->input('method'),
+                'full_address' => $request->input('full_address'),
             ]);
             return redirect()->route('payment.index');
         }
@@ -54,10 +56,12 @@ class PurchaseController extends Controller
             'purchase_method' => $request->input('method'),
             'purchase_full_address' => $request->input('full_address'),
         ]);
-        // 取引中に追加
+        // 取引中に追加（購入情報も保存）
         Transaction::create([
             'item_id' => $item->id,
             'user_id' => $user->id,
+            'method' => $request->input('method'),
+            'full_address' => $request->input('full_address'),
         ]);
         return redirect("/trade/chat/{$item->id}");
     }

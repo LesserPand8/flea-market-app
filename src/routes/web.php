@@ -29,7 +29,6 @@ Route::get('/item/{id}', [DetailController::class, 'detail']);
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/comment', [DetailController::class, 'comment']);
     Route::post('/goods/{item_id}', [DetailController::class, 'goods']);
-    Route::post('/trade/{item_id}', [DetailController::class, 'trade']);
 
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'purchase']);
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchaseDecision']);
