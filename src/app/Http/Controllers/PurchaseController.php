@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Profile;
 use App\Models\Purchase;
+use App\Models\Transaction;
 
 class PurchaseController extends Controller
 {
@@ -35,25 +36,30 @@ class PurchaseController extends Controller
             session([
                 'purchase_item_id' => $item->id,
                 'purchase_user_id' => $user->id,
+                'purchase_method' => $request->input('method'),
                 'purchase_full_address' => $request->input('full_address'),
             ]);
-            Purchase::create([
+            // 取引中に追加
+            Transaction::create([
                 'item_id' => $item->id,
                 'user_id' => $user->id,
-                'method' => $request->input('method'),
-                'full_address' => $request->input('full_address'),
             ]);
             return redirect()->route('payment.index');
         }
 
-        // コンビニ払いは現状通り
-        Purchase::create([
+        // コンビニ払いも購入情報をセッションに保存
+        session([
+            'purchase_item_id' => $item->id,
+            'purchase_user_id' => $user->id,
+            'purchase_method' => $request->input('method'),
+            'purchase_full_address' => $request->input('full_address'),
+        ]);
+        // 取引中に追加
+        Transaction::create([
             'item_id' => $item->id,
             'user_id' => $user->id,
-            'method' => $request->input('method'),
-            'full_address' => $request->input('full_address'),
         ]);
-        return redirect('/');
+        return redirect("/trade/chat/{$item->id}");
     }
 
     public function addressChanging($item_id)

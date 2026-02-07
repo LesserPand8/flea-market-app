@@ -10,6 +10,7 @@ use App\Models\Profile;
 use App\Models\Transaction;
 use App\Models\Message;
 use App\Models\Evaluation;
+use App\Models\Purchase;
 use App\Mail\TradeCompletedNotification;
 use App\Http\Requests\TradingChatRequest;
 use App\Http\Requests\EvalitionRequest;
@@ -138,7 +139,24 @@ class TradingChatController extends Controller
             // 購入者が評価した場合
             if ($myTransaction->is_completed) {
                 // 既に完了フラグが立っている場合（出品者が先に評価済み）
-                // 両者評価済みなので取引を削除
+                // 両者評価済みなのでPurchaseテーブルに登録して取引を削除
+
+                // セッションから購入情報を取得
+                $purchaseMethod = session('purchase_method');
+                $purchaseFullAddress = session('purchase_full_address');
+
+                if ($purchaseMethod && $purchaseFullAddress) {
+                    Purchase::create([
+                        'item_id' => $item->id,
+                        'user_id' => $currentUser->id,
+                        'method' => $purchaseMethod,
+                        'full_address' => $purchaseFullAddress,
+                    ]);
+
+                    // セッションをクリア
+                    session()->forget(['purchase_item_id', 'purchase_user_id', 'purchase_method', 'purchase_full_address']);
+                }
+
                 $myTransaction->delete();
             } else {
                 // まだ出品者が評価していない場合
@@ -157,7 +175,25 @@ class TradingChatController extends Controller
                 ->first();
 
             if ($othersTransaction) {
-                // 購入者が既に評価済み（is_completed = true）なので削除
+                // 購入者が既に評価済み（is_completed = true）なのでPurchaseテーブルに登録して削除
+
+                // セッションから購入情報を取得
+                $purchaseUserId = session('purchase_user_id');
+                $purchaseMethod = session('purchase_method');
+                $purchaseFullAddress = session('purchase_full_address');
+
+                if ($purchaseUserId && $purchaseMethod && $purchaseFullAddress) {
+                    Purchase::create([
+                        'item_id' => $item->id,
+                        'user_id' => $purchaseUserId,
+                        'method' => $purchaseMethod,
+                        'full_address' => $purchaseFullAddress,
+                    ]);
+
+                    // セッションをクリア
+                    session()->forget(['purchase_item_id', 'purchase_user_id', 'purchase_method', 'purchase_full_address']);
+                }
+
                 $othersTransaction->delete();
             }
         }

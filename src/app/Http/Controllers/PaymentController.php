@@ -37,7 +37,7 @@ class PaymentController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => url('/'),
+            'success_url' => url("/trade/chat/{$item->id}"),
             'cancel_url' => url('/payment?cancel=1'),
             'metadata' => [
                 'item_id' => $item->id,
