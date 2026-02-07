@@ -47,6 +47,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/trade/chat/{item_id}', [TradingChatController::class, 'show']);
     Route::post('/trade/finish/{item_id}', [TradingChatController::class, 'finish']);
     Route::post('/trade/chat/message', [TradingChatController::class, 'message']);
+    Route::get('/trade/chat/message/{message_id}/edit', [TradingChatController::class, 'editMessage']);
+    Route::post('/trade/chat/message/{message_id}/edit', [TradingChatController::class, 'updateMessage']);
     Route::delete('/trade/chat/message/{message_id}/delete', [TradingChatController::class, 'deleteMessage']);
 });
 

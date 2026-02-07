@@ -84,7 +84,7 @@
     <form action="/trade/chat/message" method="POST" class="chat-input" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="item_id" value="{{ $item->id }}">
-        <input type="text" class="chat-input__text" name="message_text" placeholder="  取引メッセージを記入してください" value="{{ old('message_text') }}">
+        <input type="text" class="chat-input__text" id="message_text" name="message_text" placeholder="  取引メッセージを記入してください" value="{{ old('message_text') }}">
         <label for="chat-input__image" class="chat-input__image-label">画像を追加
             <input type="file" id="chat-input__image" class="chat-input__image" name="chat_image" accept=".png,.jpeg,.jpg">
         </label>
@@ -94,4 +94,47 @@
     </form>
 </div>
 </div>
+
+<script>
+    const storageKey = 'chat_message_{{ $item->id }}';
+    const messageInput = document.getElementById('message_text');
+
+    // ページ読み込み時にローカルストレージから値を復元
+    function restoreMessage() {
+        const savedMessage = localStorage.getItem(storageKey);
+        if (savedMessage && !messageInput.value) {
+            messageInput.value = savedMessage;
+        }
+    }
+
+    // 入力値をローカルストレージに保存
+    function saveMessage() {
+        localStorage.setItem(storageKey, messageInput.value);
+    }
+
+    // フォーム送信時に保存済みメッセージを削除
+    messageInput.closest('form').addEventListener('submit', function() {
+        // 送信成功時にのみ削除されるようにするため、成功時の処理は後述
+        setTimeout(function() {
+            if (messageInput.value) {
+                // 送信後の画面遷移時に削除
+                localStorage.removeItem(storageKey);
+            }
+        }, 1000);
+    });
+
+    // ページ読み込み時に復元
+    document.addEventListener('DOMContentLoaded', restoreMessage);
+
+    // リアルタイム保存
+    messageInput.addEventListener('input', saveMessage);
+
+    // ページを離れる前に保存
+    window.addEventListener('beforeunload', saveMessage);
+
+    // 送信成功時にメッセージをクリア（successメッセージがある場合）
+    if (document.querySelector('[class*="success"]')) {
+        localStorage.removeItem(storageKey);
+    }
+</script>
 @endsection

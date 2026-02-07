@@ -159,9 +159,39 @@ class TradingChatController extends Controller
             return redirect()->back()->withErrors(['message' => 'このメッセージは編集できません。']);
         }
 
-        $item_id = $message->item_id;
-        $message->delete();
+        $item = Item::findOrFail($message->item_id);
 
-        return redirect("/trade/chat/{$item_id}")->with('success', 'メッセージを編集しました。');
+        return view('edit-message', compact('message', 'item'));
+    }
+
+    public function updateMessage(TradingChatRequest $request, $message_id)
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        $message = Message::findOrFail($message_id);
+
+        // 自分のメッセージであることを確認
+        if ($message->user_id !== Auth::id()) {
+            return redirect()->back()->withErrors(['message' => 'このメッセージは編集できません。']);
+        }
+
+        $validated = $request->validated();
+
+        // メッセージ本文を更新
+        $message->message = $validated['message_text'];
+
+        // 画像がアップロードされた場合は更新
+        if ($request->hasFile('chat_image')) {
+            $imageFile = $request->file('chat_image');
+            $imageName = uniqid() . '_' . $imageFile->getClientOriginalName();
+            $imageFile->storeAs('public/messages', $imageName);
+            $message->image = 'storage/messages/' . $imageName;
+        }
+
+        $message->save();
+
+        return redirect("/trade/chat/{$message->item_id}")->with('success', 'メッセージを更新しました。');
     }
 }
