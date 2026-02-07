@@ -8,7 +8,9 @@ use App\Models\Item;
 use App\Models\Profile;
 use App\Models\Transaction;
 use App\Models\Message;
+use App\Models\Evaluation;
 use App\Http\Requests\TradingChatRequest;
+use App\Http\Requests\EvalitionRequest;
 
 class TradingChatController extends Controller
 {
@@ -78,19 +80,57 @@ class TradingChatController extends Controller
         return view('trading-chat', compact('item', 'currentUser', 'otherUser', 'profile', 'isPurchaser', 'otherTradeItems', 'messages'));
     }
 
-    public function finish(Request $request, $item_id)
+    public function finish(EvalitionRequest $request, $item_id)
     {
         if (!Auth::check()) {
             return redirect('/login');
         }
 
-        // 取引完了処理
-        $transaction = Transaction::where('item_id', $item_id)
-            ->where('user_id', Auth::id())
+        $validated = $request->validated();
+        $currentUser = Auth::user();
+        $item = Item::findOrFail($item_id);
+
+        // 自分が購入者か出品者かを判定
+        $myTransaction = Transaction::where('item_id', $item_id)
+            ->where('user_id', $currentUser->id)
             ->first();
 
-        if ($transaction) {
-            $transaction->delete();
+        $isSeller = $item->sellers()->where('user_id', $currentUser->id)->exists();
+
+        // 取引相手のIDを決定
+        if ($myTransaction) {
+            // 自分が購入者の場合、出品者のIDを評価対象に
+            $evaluatedUserId = $item->sellers()->first()->id;
+        } elseif ($isSeller) {
+            // 自分が出品者の場合、購入者のIDを評価対象に
+            $othersTransaction = Transaction::where('item_id', $item_id)
+                ->where('user_id', '!=', $currentUser->id)
+                ->first();
+
+            if (!$othersTransaction) {
+                return redirect('/mypage?page=trade')->withErrors(['evaluation_score' => '取引が見つかりません。']);
+            }
+            $evaluatedUserId = $othersTransaction->user_id;
+        } else {
+            return redirect('/mypage?page=trade')->withErrors(['evaluation_score' => '取引が見つかりません。']);
+        }
+
+        // 評価を保存（user_idは評価対象者）
+        Evaluation::create([
+            'user_id' => $evaluatedUserId,
+            'evaluation_score' => $validated['evaluation_score'],
+        ]);
+
+        // 取引を削除
+        if ($myTransaction) {
+            $myTransaction->delete();
+        } else {
+            $othersTransaction = Transaction::where('item_id', $item_id)
+                ->where('user_id', '!=', $currentUser->id)
+                ->first();
+            if ($othersTransaction) {
+                $othersTransaction->delete();
+            }
         }
 
         return redirect('/mypage?page=trade')->with('success', '取引が完了しました。');

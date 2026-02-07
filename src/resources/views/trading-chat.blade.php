@@ -27,10 +27,9 @@
                 <h2 class="profile-name"> 「{{ $otherUser->name }}」さんとの取引画面</h2>
             </div>
             @if($isPurchaser)
-            <form class="trade-form" action="/trade/finish/{{ $item->id }}" method="POST">
-                @csrf
-                <button class="trade__button">取引を完了する</button>
-            </form>
+            <div class="trade-form">
+                <button type="button" class="trade__button" id="openEvaluationModal">取引を完了する</button>
+            </div>
             @endif
         </div>
         <div class="item-info">
@@ -95,6 +94,40 @@
 </div>
 </div>
 
+@if($isPurchaser)
+<div class="evaluation-modal" id="evaluationModal">
+    <div class="evaluation-modal__overlay" id="evaluationModalOverlay"></div>
+    <div class="evaluation-modal__content">
+        <div class="evaluation-modal__header">取引が完了しました。</div>
+        <div class="evaluation-modal__subtitle">今回の取引相手はどうでしたか？</div>
+
+        @if ($errors->has('evaluation_score'))
+        <div class="evaluation-modal__error">{{ $errors->first('evaluation_score') }}</div>
+        @endif
+
+        <form id="evaluationForm" action="/trade/finish/{{ $item->id }}" method="POST" class="evaluation-modal__form">
+            @csrf
+            <div class="evaluation-stars" id="starRating">
+                <input type="radio" name="evaluation_score" value="1" id="star1" class="star-input">
+                <label for="star1" class="star-label">★</label>
+                <input type="radio" name="evaluation_score" value="2" id="star2" class="star-input">
+                <label for="star2" class="star-label">★</label>
+                <input type="radio" name="evaluation_score" value="3" id="star3" class="star-input">
+                <label for="star3" class="star-label">★</label>
+                <input type="radio" name="evaluation_score" value="4" id="star4" class="star-input">
+                <label for="star4" class="star-label">★</label>
+                <input type="radio" name="evaluation_score" value="5" id="star5" class="star-input">
+                <label for="star5" class="star-label">★</label>
+            </div>
+
+            <div class="evaluation-modal__actions">
+                <button type="submit" class="evaluation-modal__submit">送信する</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endif
+
 <script>
     const storageKey = 'chat_message_{{ $item->id }}';
     const messageInput = document.getElementById('message_text');
@@ -135,6 +168,82 @@
     // 送信成功時にメッセージをクリア（successメッセージがある場合）
     if (document.querySelector('[class*="success"]')) {
         localStorage.removeItem(storageKey);
+    }
+
+    // 評価モーダル制御
+    const evaluationModal = document.getElementById('evaluationModal');
+    const openEvaluationModal = document.getElementById('openEvaluationModal');
+    const closeEvaluationModal = document.getElementById('closeEvaluationModal');
+    const evaluationModalOverlay = document.getElementById('evaluationModalOverlay');
+
+    if (openEvaluationModal) {
+        openEvaluationModal.addEventListener('click', function(e) {
+            e.preventDefault();
+            evaluationModal.classList.add('is-open');
+        });
+    }
+
+    if (closeEvaluationModal) {
+        closeEvaluationModal.addEventListener('click', function() {
+            evaluationModal.classList.remove('is-open');
+        });
+    }
+
+    if (evaluationModalOverlay) {
+        evaluationModalOverlay.addEventListener('click', function() {
+            evaluationModal.classList.remove('is-open');
+        });
+    }
+
+    // 星評価の制御
+    const starLabels = document.querySelectorAll('.star-label');
+    const starRating = document.getElementById('starRating');
+    let selectedValue = 0;
+
+    function getInputFromLabel(label) {
+        const targetId = label.getAttribute('for');
+        return targetId ? document.getElementById(targetId) : null;
+    }
+
+    function applyStarColors(value) {
+        starLabels.forEach((label) => {
+            const input = getInputFromLabel(label);
+            const inputValue = input ? parseInt(input.value) : 0;
+            if (value > 0 && inputValue <= value) {
+                label.classList.add('hovered');
+            } else {
+                label.classList.remove('hovered');
+            }
+        });
+    }
+
+    // 初期選択値
+    const initiallyChecked = document.querySelector('.star-input:checked');
+    selectedValue = initiallyChecked ? parseInt(initiallyChecked.value) : 0;
+    applyStarColors(selectedValue);
+
+    // クリックで確定
+    starLabels.forEach((label) => {
+        label.addEventListener('click', function() {
+            const input = getInputFromLabel(this);
+            if (!input) return;
+            input.checked = true;
+            selectedValue = parseInt(input.value);
+            applyStarColors(selectedValue);
+        });
+
+        // ホバーで一時表示
+        label.addEventListener('mouseenter', function() {
+            const input = getInputFromLabel(this);
+            if (!input) return;
+            applyStarColors(parseInt(input.value));
+        });
+    });
+
+    if (starRating) {
+        starRating.addEventListener('mouseleave', function() {
+            applyStarColors(selectedValue);
+        });
     }
 </script>
 @endsection

@@ -325,6 +325,115 @@
         color: red;
         font-size: 18px;
     }
+
+    /* 評価モーダルスタイル */
+    .evaluation-modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .evaluation-modal.is-open {
+        display: flex;
+    }
+
+    .evaluation-modal__overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+    }
+
+    .evaluation-modal__content {
+        /* position: relative; */
+        background: #fdfce6;
+        border: 2px solid #000000;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 550px;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .evaluation-modal__header {
+        font-size: 30px;
+        color: #000000;
+        padding: 15px 0 15px 15px;
+        font-family: Inter;
+        font-weight: 400;
+        border-bottom: 1px solid #000000;
+    }
+
+    .evaluation-modal__subtitle {
+        font-family: Inter;
+        font-weight: 400;
+        font-size: 16px;
+        color: #868686;
+        padding: 10px 15px 0 15px;
+    }
+
+    .evaluation-modal__error {
+        font-family: Inter;
+        font-weight: 700;
+        font-size: 14px;
+        color: #ff0000;
+        text-align: left;
+    }
+
+    .evaluation-stars {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        padding: 20px 0;
+        border-bottom: 1px solid #000000;
+    }
+
+    .star-input {
+        display: none;
+    }
+
+    .star-label {
+        font-size: 80px;
+        color: #d9d9d9;
+        cursor: pointer;
+        transition: color 0.2s ease;
+        user-select: none;
+    }
+
+    .star-label.hovered {
+        color: #ffd400;
+    }
+
+    .evaluation-modal__form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .evaluation-modal__actions {
+        display: flex;
+        justify-content: end;
+        padding: 10px 10px;
+    }
+
+    .evaluation-modal__submit {
+        background: #ff8282;
+        border: none;
+        color: #ffffff;
+        border-radius: 5px;
+        padding: 6px 13px;
+        font-family: Inter;
+        font-weight: 400;
+        font-size: 20px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .evaluation-modal__submit:hover {
+        background: #ff3d3d;
+    }
 }
 
 /* タブレット（768-1024px）用 */
