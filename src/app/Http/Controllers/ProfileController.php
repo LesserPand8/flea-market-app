@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Profile;
+use App\Models\Message;
 
 class ProfileController extends Controller
 {
@@ -22,6 +23,47 @@ class ProfileController extends Controller
         $tradeCount = Item::whereHas('trades', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })->count();
+
+        // 新規メッセージ数を計算
+        $newMessageCount = 0;
+
+        // 自分が取引開始した商品
+        $myTradeItems = Item::whereHas('trades', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->get();
+
+        // 自分が出品した商品で他者が取引開始したもの
+        $othersTradeItems = Item::whereHas('sellers', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->whereHas('trades', function ($query) use ($user) {
+            $query->where('user_id', '!=', $user->id);
+        })->get();
+
+        // 全取引中商品をマージ
+        $allTradeItems = $myTradeItems->merge($othersTradeItems)->unique('id');
+
+        foreach ($allTradeItems as $item) {
+            // 自分の最新メッセージを取得
+            $myLatestMessage = Message::where('item_id', $item->id)
+                ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($myLatestMessage) {
+                // 自分の最新メッセージより新しい相手のメッセージ数
+                $newCount = Message::where('item_id', $item->id)
+                    ->where('user_id', '!=', $user->id)
+                    ->where('created_at', '>', $myLatestMessage->created_at)
+                    ->count();
+                $newMessageCount += $newCount;
+            } else {
+                // 自分のメッセージがない場合、相手の全メッセージ数
+                $newCount = Message::where('item_id', $item->id)
+                    ->where('user_id', '!=', $user->id)
+                    ->count();
+                $newMessageCount += $newCount;
+            }
+        }
 
         if ($page === 'buy') {
             // 購入した商品
@@ -43,13 +85,35 @@ class ProfileController extends Controller
 
             // 両方をマージ（重複削除）
             $items = $myTrades->merge($othersTradeOnMySells)->unique('id')->values();
+
+            // 各商品ごとの新規メッセージ数を計算
+            $itemNewMessageCounts = [];
+            foreach ($items as $item) {
+                $myLatestMessage = Message::where('item_id', $item->id)
+                    ->where('user_id', $user->id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                if ($myLatestMessage) {
+                    $newCount = Message::where('item_id', $item->id)
+                        ->where('user_id', '!=', $user->id)
+                        ->where('created_at', '>', $myLatestMessage->created_at)
+                        ->count();
+                } else {
+                    $newCount = Message::where('item_id', $item->id)
+                        ->where('user_id', '!=', $user->id)
+                        ->count();
+                }
+                $itemNewMessageCounts[$item->id] = $newCount;
+            }
         } else {
             // 出品した商品
             $items = Item::whereHas('sellers', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->get();
+            $itemNewMessageCounts = [];
         }
 
-        return view('profile', compact('user', 'items', 'page', 'profile', 'tradeCount'));
+        return view('profile', compact('user', 'items', 'page', 'profile', 'tradeCount', 'newMessageCount', 'itemNewMessageCounts'));
     }
 }

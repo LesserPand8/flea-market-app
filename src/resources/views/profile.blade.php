@@ -22,8 +22,8 @@
         <a class="tab-purchase {{ $page === 'buy' ? 'active' : '' }}" href="/mypage?page=buy">購入した商品</a>
         <a class="tab-purchase {{ $page === 'trade' ? 'active' : '' }}" href="/mypage?page=trade">
             取引中の商品
-            @if (!empty($tradeCount) && $tradeCount > 0)
-            <span class="tab-badge">{{ $tradeCount }}</span>
+            @if (!empty($newMessageCount) && $newMessageCount > 0)
+            <span class="tab-badge">{{ $newMessageCount }}</span>
             @endif
         </a>
     </div>
@@ -32,6 +32,9 @@
         <div class="item-card">
             @if ($page === 'trade')
             <a href="/trade/chat/{{ $item->id }}">
+                @if (!empty($itemNewMessageCounts[$item->id]) && $itemNewMessageCounts[$item->id] > 0)
+                <span class="item-badge">{{ $itemNewMessageCounts[$item->id] }}</span>
+                @endif
                 <img src="{{ asset($item->image) }}" alt="商品画像" class="img-content" />
                 <div class="item-name">
                     {{$item->name}}
