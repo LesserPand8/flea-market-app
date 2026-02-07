@@ -122,6 +122,57 @@ exit
 stripe listen --forward-to localhost:80/stripe/webhook
 ```
 
+## URL
+
+- 商品一覧画面：http://localhost/
+- ログイン画面：http://localhost/login
+- phpMyAdmin：http://localhost:8080/
+- mailhog：http://localhost:8025/
+
+## テストアカウント
+
+name: user1  
+email: user1@example.com  
+password: testtest
+
+---
+
+name: user2  
+email: user2@example.com  
+password: testtest
+
+---
+
+name: user3  
+email: user3@example.com  
+password: testtest
+
+---
+
+## プロ試験実装補足
+
+**◎ マイページの［取引中の商品］タブで商品を表示させる方法**
+
+1. テストアカウントでログインを行う
+2. 商品一覧画面から商品を選択する
+3. ［購入手続きへ］ボタンをクリックする
+4. 支払方法を選択して［購入する］ボタンをクリックする  
+   ※コンビニ支払いを選択した場合、［購入する］ボタンをクリック後、取引チャット画面に遷移する  
+   ※カード支払いを選択した場合、［購入する］ボタンをクリック後、stripe の決済画面に遷移する  
+   　決済完了後、取引チャット画面に遷移する
+5. 取引チャット画面に遷移したら、ロゴをクリックする
+6. 右上の［マイページ］をクリックする
+7. ［取引中の商品］タブをクリックする
+8. 上記手順で購入した商品が［取引中の商品］タブで表示される
+
+**◎ 取引が完了した商品について**
+
+商品の購入者が取引相手の評価を行い取引を完了後、出品者が取引相手の評価を実施したら、購入者のマイページの［購入した商品］タブにて購入した商品が表示される
+
+## ER 図
+
+![alt](ER.png)
+
 ## PHPUnit でのテストについて
 
 **テスト準備**
@@ -257,37 +308,6 @@ colors="true"
 ```bash
 vendor/bin/phpunit
 ```
-
-## URL
-
-- 商品一覧画面：http://localhost/
-- ログイン画面：http://localhost/login
-- phpMyAdmin：http://localhost:8080/
-- mailhog：http://localhost:8025/
-
-## ER 図
-
-![alt](ER.png)
-
-## テストアカウント
-
-name: user1  
-email: user1@example.com  
-password: testtest
-
----
-
-name: user2  
-email: user2@example.com  
-password: testtest
-
----
-
-name: user3  
-email: user3@example.com  
-password: testtest
-
----
 
 ## 使用技術(実行環境)
 
